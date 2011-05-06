@@ -1,0 +1,12 @@
+ORG 205 / Istruzione mai eseguita = BUN 205, fine PC = 001000001101
+CLA
+CLE
+ADD 20A
+CIR
+STA 20A
+AND 418 I
+BUN 205
+HLT
+END
+
+

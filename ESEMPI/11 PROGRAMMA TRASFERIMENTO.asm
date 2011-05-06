@@ -1,0 +1,19 @@
+ORG 100 /Trasferisce i dati da X+i a Y+i con i = (0,1,2,3)
+BUN L
+SBR, ISZ L
+ISZ N
+L, LDA X
+N, STA Y
+ISZ CNT
+BUN SBR
+HLT
+CNT, DEC -4
+X, DEC 10
+DEC 20
+DEC 30
+DEC 40
+Y, DEC 0
+DEC 0
+DEC 0
+DEC 0
+END

@@ -1,0 +1,3 @@
+ORG 100
+HLT
+END
