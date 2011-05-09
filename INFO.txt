@@ -1,6 +1,9 @@
- INFO                                                                   
+ INFO
 
- Versione Corrente = 1.6                                                
+ Versione Corrente = 1.6.1
+ 
+ Versione 1.6.1:
+   - (Core) Corretta addizione dopo aggiunta delle micro-istruzioni                                             
 
  Versione 1.6 :                                                         
    - Creato il presente file (INFO.txt) per le informazioni degli aggiornamenti                    
