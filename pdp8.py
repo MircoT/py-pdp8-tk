@@ -418,15 +418,13 @@ class pdp8(object):
             self.MBR = self.RAM[self.MAR]
             self.microistruzioni += "MBR <- M \n"
         elif self.tempo is 2:
-            temp = self.range(int(self.AC,2))+self.range(int(self.MBR,2))
-            if temp<0 and self.range(temp)>0 and int(self.AC,2)!= 0 or temp>0 and self.range(temp)<0 and int(self.AC,2) != 0:
-                self.E = '1' # Riporto dei numeri negativi oltre il range
-            temp = self.binario(self.range(temp))
-            if len(temp) == 17:
-                self.E = temp[0] # Riporto dei numeri positivi oltre il range
-                self.AC = temp[1:]
+            temp = int(self.AC,2)+int(self.MBR,2)
+            if temp>0:
+                temp = bin(temp)[2:].zfill(17)
             else:
-                self.AC = temp.zfill(16)
+                temp = bin(temp)[3:].zfill(17)
+            self.E = temp[0]
+            self.AC = temp[1:]
             self.microistruzioni += "E-AC <- AC + MBR \n"
         elif self.tempo is 3:
             self.F = False
