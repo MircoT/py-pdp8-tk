@@ -1,7 +1,10 @@
  INFO
 
- Versione Corrente = 1.6.1
+ Versione Corrente = 1.6.2
  
+ Versione 1.6.2:
+   - Aggiunti labels per visualizzare il contenuto di AC in intero ed esadecimale
+
  Versione 1.6.1:
    - (Core) Corretta addizione dopo aggiunta delle micro-istruzioni                                             
 
