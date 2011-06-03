@@ -86,14 +86,19 @@ class Emulatore(object):
         self.mar.grid(row = 1, column = 0, sticky = W+E)
         self.mbr = LabelFrame(self.registri, text = 'MBR',relief = FLAT, labelanchor = 'e', padx = 5)
         self.mbr.grid(row = 2, column = 0, sticky = W+E)
-        self.lac = LabelFrame(self.registri, text = 'AC',relief = FLAT, labelanchor = 'e', padx = 5)
-        self.lac.grid(row = 3, column = 0, sticky = W+E)
-        self.vare = LabelFrame(self.registri, text = 'E',relief = FLAT, labelanchor = 'e', padx = 5)
-        self.vare.grid(row = 4, column = 0, sticky = W+E)
         self.lopr = LabelFrame(self.registri, text = 'OPR',relief = FLAT, labelanchor = 'e', padx = 5)
-        self.lopr.grid(row = 5, column = 0, sticky = W+E)
+        self.lopr.grid(row = 3, column = 0, sticky = W+E)
         self.vari = LabelFrame(self.registri, text = 'I',relief = FLAT, labelanchor = 'e', padx = 5)
-        self.vari.grid(row = 6, column = 0, sticky = W+E)
+        self.vari.grid(row = 4, column = 0, sticky = W+E)
+        self.vare = LabelFrame(self.registri, text = 'E',relief = FLAT, labelanchor = 'e', padx = 5)
+        self.vare.grid(row = 5, column = 0, sticky = W+E)
+        self.lac = LabelFrame(self.registri, text = 'AC',relief = FLAT, labelanchor = 'e', padx = 5)
+        self.lac.grid(row = 6, column = 0, sticky = W+E)
+        self.lacint = LabelFrame(self.registri, text = 'INT AC',relief = FLAT, labelanchor = 'e', padx = 5)
+        self.lacint.grid(row = 7, column = 0, sticky = W+E)
+        self.lachex = LabelFrame(self.registri, text = 'HEX AC',relief = FLAT, labelanchor = 'e', padx = 5)
+        self.lachex.grid(row = 8, column = 0, sticky = W+E)
+        
 
         ## Microistruzioni
         self.micro = LabelFrame(self.master, text = 'Microistruzioni eseguite', relief = RIDGE, borderwidth = 5, labelanchor = 'n', pady = 5)
@@ -170,12 +175,8 @@ class Emulatore(object):
         self.labelmar.grid()
         self.labelmbr = Label(self.mbr, text = '000000000000000', relief = SUNKEN)
         self.labelmbr.grid()
-        self.labelac = Label(self.lac, text = '000000000000000', relief = SUNKEN)
-        self.labelac.grid()
         self.labelvari = Label(self.vari, text = '0', relief = SUNKEN)
         self.labelvari.grid()
-        self.labelvare = Label(self.vare, text = '0', relief = SUNKEN)
-        self.labelvare.grid()
         self.labelopr = Label(self.lopr, text = '000', relief = SUNKEN)
         self.labelopr.grid()
         self.labelucs = Label(self.unitas, text = '0')
@@ -192,6 +193,14 @@ class Emulatore(object):
         self.labeldelay.grid()
         self.labeltempo = Label(self.tempo, text = str(self.CD.tempo))
         self.labeltempo.grid()
+        self.labelac = Label(self.lac, text = '000000000000000', relief = SUNKEN)
+        self.labelac.grid()
+        self.labelacint = Label(self.lacint, text = '000000000000000', relief = SUNKEN)
+        self.labelacint.grid()
+        self.labelachex = Label(self.lachex, text = '000000000000000', relief = SUNKEN)
+        self.labelachex.grid()
+        self.labelvare = Label(self.vare, text = '0', relief = SUNKEN)
+        self.labelvare.grid()
     
     def continua(self):
         """
@@ -380,9 +389,12 @@ class Emulatore(object):
         self.labelmar.config(text = self.CD.MAR)
         self.labelmbr.config(text = self.CD.MBR)
         self.labelac.config(text = self.CD.AC)
+        self.labelacint.config(text = str(self.CD.range(int(self.CD.AC,2))))
+        self.labelachex.config(text = str((hex(int(self.CD.AC,2))[2:].upper())).zfill(4))
         self.labelvare.config(text = self.CD.E)
         self.labelvari.config(text = self.CD.I)
         self.labelopr.config(text = self.CD.OPR)
+        
 
     def aggiornauc(self):
         """

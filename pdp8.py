@@ -516,7 +516,6 @@ class pdp8(object):
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
         
-    
     def _CIR(self):
         """
         Sposta verso destra i bit in E-AC
