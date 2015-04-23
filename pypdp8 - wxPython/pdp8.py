@@ -1,36 +1,19 @@
 # -*- coding: utf-8 -*-
 
-#------------------------------------------------------------------------#
-# Copyright (C) 2011  Mirco Tracolli                                     #
-#                                                                        #
-#  This program is free software: you can redistribute it and/or modify  #
-#  it under the terms of the GNU General Public License as published by  #
-#  the Free Software Foundation, either version 3 of the License, or     #
-#  (at your option) any later version.                                   #
-#                                                                        #
-#  This program is distributed in the hope that it will be useful,       #
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of        #
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         #
-#  GNU General Public License for more details.                          #
-#                                                                        #
-#  You should have received a copy of the GNU General Public License     #
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>. #
-#                                                                        #
-#  Contact: m.tracolli@gmail.com                                         #
-#                                                                        #
-#  Collaborators: Walter Valentini                                       #
-#________________________________________________________________________#
 
 import sys
 from wx import TextEntryDialog as dialogin
-from wx import ID_OK,ICON_ERROR,ICON_WARNING
+from wx import ID_OK, ICON_ERROR, ICON_WARNING
 from wx import MessageBox as avviso
 
+
 class pdp8(object):
+
     """
     Calcolatore didattico pdp8
     """
-    def __init__ (self,codice=None):
+
+    def __init__(self, codice=None):
         """
         Inizializza i registri e le variabili di controllo S,F ed R
         """
@@ -59,48 +42,48 @@ class pdp8(object):
         self.indmodifica = ''
         self.halt = False
         self.Opcodes = {
-            'CLA':'0111100000000000',
-            'CLE':'0111010000000000',
-            'CMA':'0111001000000000',
-            'CME':'0111000100000000',
-            'CIR':'0111000010000000',
-            'CIL':'0111000001000000',
-            'INC':'0111000000100000',
-            'SPA':'0111000000010000',
-            'SNA':'0111000000001000',
-            'SZA':'0111000000000100',
-            'SZE':'0111000000000010',
-            'HLT':'0111000000000001',
-            'INP':'1111100000000000',
-            'OUT':'1111010000000000',
-            'SKI':'1111001000000000',
-            'SKO':'1111000100000000',
-            'ION':'1111000010000000',
-            'IOF':'1111000001000000',
-            'AND':'000',
-            'ADD':'001',
-            'LDA':'010',
-            'STA':'011',
-            'BUN':'100',
-            'BSA':'101',
-            'ISZ':'110'
-            }
+            'CLA': '0111100000000000',
+            'CLE': '0111010000000000',
+            'CMA': '0111001000000000',
+            'CME': '0111000100000000',
+            'CIR': '0111000010000000',
+            'CIL': '0111000001000000',
+            'INC': '0111000000100000',
+            'SPA': '0111000000010000',
+            'SNA': '0111000000001000',
+            'SZA': '0111000000000100',
+            'SZE': '0111000000000010',
+            'HLT': '0111000000000001',
+            'INP': '1111100000000000',
+            'OUT': '1111010000000000',
+            'SKI': '1111001000000000',
+            'SKO': '1111000100000000',
+            'ION': '1111000010000000',
+            'IOF': '1111000001000000',
+            'AND': '000',
+            'ADD': '001',
+            'LDA': '010',
+            'STA': '011',
+            'BUN': '100',
+            'BSA': '101',
+            'ISZ': '110'
+        }
         if codice is not None:
             self.carica(codice.lstrip())
-    
-    def breakpoint(self,stringa):
+
+    def breakpoint(self, stringa):
         """
         Aggiunge o toglie un breakpoint alla cella di memoria passata
         """
         if self.BREAKP.has_key(stringa):
             if self.BREAKP[stringa] == False:
                 self.BREAKP[stringa] = True
-            else :
+            else:
                 self.BREAKP[stringa] = False
         else:
             raise NameError("Cella di memoria non presente")
-    
-    def step(self,root):
+
+    def step(self, root):
         """
         Uno step equivale all'esecuzione dei seguenti cicli:
             - ciclo di fetch
@@ -120,19 +103,19 @@ class pdp8(object):
                 self.interrupt(root)
             if self.breaks:
                 self.S = False
-            if self.tempo <3:
+            if self.tempo < 3:
                 self.tempo += 1
             else:
                 self.tempo = 0
         except Exception:
-            avviso("Errore, Controllare il codice assembly!",style=ICON_ERROR)
+            avviso("Errore, Controllare il codice assembly!", style=ICON_ERROR)
             self.S = False
-    
+
     def interrupt(self, root):
         """
         Input da tastiera ed output su video di caratteri ASCII (da 0 a 127)
         """
-        if self.MBR == self.Opcodes['INP'] and self.Interrupt: # INP
+        if self.MBR == self.Opcodes['INP'] and self.Interrupt:  # INP
             if self.tempo is 0:
                 self.microistruzioni = ''
                 self.microistruzioni += '\n\n'
@@ -149,7 +132,8 @@ class pdp8(object):
                 temp = ''
                 to = 128
                 while len(temp) != 1 or to > 127 and temp == None:
-                    dlg = dialogin(root,"Inserire un carattere ASCII","Input")
+                    dlg = dialogin(
+                        root, "Inserire un carattere ASCII", "Input")
                     if dlg.ShowModal() == ID_OK:
                         temp = dlg.GetValue()
                     else:
@@ -157,14 +141,14 @@ class pdp8(object):
                     if len(temp) == 1:
                         to = ord(temp)
                     elif temp == '':
-                        to = ord(chr(13)) ## Ritorno carrello
+                        to = ord(chr(13))  # Ritorno carrello
                         break
                 self.AC = self.binario(to).zfill(16)
                 self.F = False
                 self.R = False
                 self.microistruzioni += "F<- 0 , R <- 0 \n"
                 self.microistruzioni += "----- \n"
-        elif self.MBR == self.Opcodes['OUT'] and self.Interrupt: # OUT
+        elif self.MBR == self.Opcodes['OUT'] and self.Interrupt:  # OUT
             if self.tempo is 0:
                 self.microistruzioni = ''
                 self.microistruzioni += '\n\n'
@@ -178,7 +162,7 @@ class pdp8(object):
                 self.microistruzioni += "NOP \n"
             elif self.tempo is 3:
                 self.microistruzioni = ''
-                temp = chr(int(self.AC,2))
+                temp = chr(int(self.AC, 2))
                 if temp == '\r':
                     temp = '\n'
                 self.inout = temp
@@ -227,7 +211,7 @@ class pdp8(object):
         else:
             self.F = False
             self.R = False
-    
+
     def _HLT(self):
         """
         Arresta il sistema
@@ -248,7 +232,7 @@ class pdp8(object):
             self.S = False
             self.microistruzioni += "S<- 0 \n"
             self.microistruzioni += "----- \n"
-            
+
     def _AND(self):
         """
         And logico tra AC e la cella indirizzata
@@ -266,8 +250,8 @@ class pdp8(object):
         elif self.tempo is 2:
             self.microistruzioni = ''
             temp = ''
-            for x in range(0,len(self.AC)):
-                temp += self.strand(self.AC[x],self.MBR[x])
+            for x in range(0, len(self.AC)):
+                temp += self.strand(self.AC[x], self.MBR[x])
             self.AC = temp
             self.microistruzioni += "AC <- AC AND MBR \n"
         elif self.tempo is 3:
@@ -275,7 +259,7 @@ class pdp8(object):
             self.F = False
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-        
+
     def _LDA(self):
         """
         Carica in AC il contenuto della cella indirizzata
@@ -294,15 +278,15 @@ class pdp8(object):
         elif self.tempo is 2:
             self.microistruzioni = ''
             self.AC = self.binario(self.range(
-                        int(self.AC,2)+self.range(
-                            int(self.MBR,2)))).zfill(16)
+                int(self.AC, 2) + self.range(
+                    int(self.MBR, 2)))).zfill(16)
             self.microistruzioni += "AC <- AC + MBR \n"
         elif self.tempo is 3:
             self.microistruzioni = ''
             self.F = False
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-        
+
     def _STA(self):
         """
         Salva nella cella indirizzata il contenuto di AC
@@ -328,7 +312,7 @@ class pdp8(object):
             self.microistruzioni += "----- \n"
             self.modd = True
             self.indmodifica = self.MAR
-    
+
     def _BUN(self):
         """
         Salto incondizionato alla cella idirizzata
@@ -350,7 +334,7 @@ class pdp8(object):
             self.F = False
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _BSA(self):
         """
         Salvataggio del PC nella cella indirizzata e salto alla cella
@@ -372,7 +356,7 @@ class pdp8(object):
             self.indmodifica = self.MAR
         elif self.tempo is 2:
             self.microistruzioni = ''
-            temp = self.range(int(self.MAR,2)) + 1
+            temp = self.range(int(self.MAR, 2)) + 1
             self.PC = self.binario(temp).zfill(12)
             self.microistruzioni += "PC <- MAR+1 \n"
         elif self.tempo is 3:
@@ -381,7 +365,7 @@ class pdp8(object):
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
             self.modd = True
-    
+
     def _ISZ(self):
         """
         Incrementa di 1 il contenuto della cella indirizzata e se il
@@ -399,24 +383,24 @@ class pdp8(object):
             self.microistruzioni += "MBR <- M \n"
         elif self.tempo is 2:
             self.microistruzioni = ''
-            temp = self.range(int(self.MBR,2)) + 1
+            temp = self.range(int(self.MBR, 2)) + 1
             self.MBR = self.binario(self.range(temp)).zfill(16)
             self.microistruzioni += "MBR <- MBR + 1 \n"
         elif self.tempo is 3:
             self.microistruzioni = ''
             self.RAM[self.MAR] = self.MBR
             self.indmodifica = self.MAR
-            if int(self.MBR,2)== 0:
-                temp = int(self.PC,2)
+            if int(self.MBR, 2) == 0:
+                temp = int(self.PC, 2)
                 temp += 1
                 self.PC = self.binario(temp).zfill(12)
             self.F = False
-            if int(self.MBR,2)== 0:
+            if int(self.MBR, 2) == 0:
                 self.microistruzioni += "PC <- PC + 1 , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
             self.modd = True
-    
+
     def _INC(self):
         """
         Incrementa di 1 il contenuto di AC esteso con E
@@ -434,7 +418,7 @@ class pdp8(object):
             self.microistruzioni += "NOP \n"
         elif self.tempo is 3:
             self.microistruzioni = ''
-            temp = self.binario(self.range(int(self.E+self.AC,2))+1)
+            temp = self.binario(self.range(int(self.E + self.AC, 2)) + 1)
             if len(temp) == 17:
                 self.E = temp[0]
                 self.AC = temp[1:]
@@ -444,7 +428,7 @@ class pdp8(object):
             self.microistruzioni += "E-AC <- E-AC + 1 , "
             self.microistruzioni += "F<- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _ADD(self):
         """
         Somma tra AC e la cella indirizzata
@@ -461,8 +445,8 @@ class pdp8(object):
             self.microistruzioni += "MBR <- M \n"
         elif self.tempo is 2:
             self.microistruzioni = ''
-            temp = int(self.AC,2)+int(self.MBR,2)
-            if temp>0:
+            temp = int(self.AC, 2) + int(self.MBR, 2)
+            if temp > 0:
                 temp = bin(temp)[2:].zfill(17)
             else:
                 temp = bin(temp)[3:].zfill(17)
@@ -474,7 +458,7 @@ class pdp8(object):
             self.F = False
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _CLA(self):
         """
         Azzera il contenuto dell'accumulatore AC
@@ -497,7 +481,7 @@ class pdp8(object):
             self.microistruzioni += "AC <- 0 , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-            
+
     def _CLE(self):
         """
         Azzera il contenuto del registro E
@@ -520,7 +504,7 @@ class pdp8(object):
             self.microistruzioni += "E <- 0 , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _CMA(self):
         """
         Complementa logicamente il contenuto dell'accumulatore AC
@@ -539,7 +523,7 @@ class pdp8(object):
         elif self.tempo is 3:
             self.microistruzioni = ''
             temp = ''
-            for x in range(0,len(self.AC)):
+            for x in range(0, len(self.AC)):
                 if self.AC[x] == '0':
                     temp += '1'
                 else:
@@ -549,7 +533,7 @@ class pdp8(object):
             self.microistruzioni += "AC <- AC' , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _CME(self):
         """
         Complementa logicamente il contenuto del registro E
@@ -575,7 +559,7 @@ class pdp8(object):
             self.microistruzioni += "E <- E' , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-        
+
     def _CIR(self):
         """
         Sposta verso destra i bit in E-AC
@@ -601,7 +585,7 @@ class pdp8(object):
             self.microistruzioni += "E-AC <- bit1 - E - (AC \ bit1) , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _CIL(self):
         """
         Sposta verso sinistra i bit in E-AC
@@ -622,12 +606,12 @@ class pdp8(object):
             tempe = self.E
             tempac = self.AC
             self.E = tempac[0]
-            self.AC = tempac[1:]+tempe
+            self.AC = tempac[1:] + tempe
             self.F = False
             self.microistruzioni += "E-AC <- AC-E , "
             self.microistruzioni += "F<- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _SPA(self):
         """
         Salta l'istruzione successiva se il contenuto di AC > 0
@@ -645,15 +629,15 @@ class pdp8(object):
             self.microistruzioni += "NOP \n"
         elif self.tempo is 3:
             self.microistruzioni = ''
-            temp = self.range(int(self.AC,2))
+            temp = self.range(int(self.AC, 2))
             if temp > 0:
-                tp = int(self.PC,2)+1
+                tp = int(self.PC, 2) + 1
                 self.PC = self.binario(tp).zfill(12)
             self.F = False
             self.microistruzioni += "if(AC>0) : PC <- PC+1 , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _SNA(self):
         """
         Salta l'istruzione successiva se il contenuto di AC < 0
@@ -671,15 +655,15 @@ class pdp8(object):
             self.microistruzioni += "NOP \n"
         elif self.tempo is 3:
             self.microistruzioni = ''
-            temp = self.range(int(self.AC,2))
+            temp = self.range(int(self.AC, 2))
             if temp < 0:
-                tp = int(self.PC,2)+1
+                tp = int(self.PC, 2) + 1
                 self.PC = self.binario(tp).zfill(12)
             self.F = False
             self.microistruzioni += "if(AC<0) : PC <- PC+1 , "
             self.microistruzioni += "F<- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _SZA(self):
         """
         Salta l'istruzione successiva se il contenuto di AC = 0
@@ -697,15 +681,15 @@ class pdp8(object):
             self.microistruzioni += "NOP \n"
         elif self.tempo is 3:
             self.microistruzioni = ''
-            temp = self.range(int(self.AC,2))
+            temp = self.range(int(self.AC, 2))
             if temp == 0:
-                tp = int(self.PC,2)+1
+                tp = int(self.PC, 2) + 1
                 self.PC = self.binario(tp).zfill(12)
             self.F = False
             self.microistruzioni += "if(AC=0) : PC <- PC+1 , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _SZE(self):
         """
         Salta l'istruzione successiva se il contenuto di E = 0
@@ -724,13 +708,13 @@ class pdp8(object):
         elif self.tempo is 3:
             self.microistruzioni = ''
             if self.E == '0':
-                tp = int(self.PC,2)+1
+                tp = int(self.PC, 2) + 1
                 self.PC = self.binario(tp).zfill(12)
             self.F = False
             self.microistruzioni += "if(E=0) : PC <- PC+1 , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def execute(self):
         """
         Esecuzione dell'operazione. Se non presente, F torna a 0 per
@@ -780,7 +764,7 @@ class pdp8(object):
                 self._ISZ()
             else:
                 self.F = False
-    
+
     def indind(self):
         """
         Ciclo di indirizzamento indiretto
@@ -804,7 +788,7 @@ class pdp8(object):
             self.R = False
             self.microistruzioni += "F <- 1 , R <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def fetch(self):
         """
         Ciclo di fetch
@@ -821,7 +805,7 @@ class pdp8(object):
             self.microistruzioni += "MAR <- PC \n"
         elif self.tempo is 1:
             self.microistruzioni = ''
-            temp = int(self.PC,2)
+            temp = int(self.PC, 2)
             temp += 1
             self.PC = self.binario(temp).zfill(12)
             self.MBR = self.RAM[self.MAR]
@@ -836,95 +820,99 @@ class pdp8(object):
             if self.I == '1' and self.OPR != '111':
                 self.R = True
                 self.microistruzioni += "R <- 1 \n"
-            else :
+            else:
                 self.F = True
                 self.microistruzioni += "F <- 1 \n"
-        
-    def carica(self,codice):
+
+    def carica(self, codice):
         """
         Carica il codice assembly in memoria. 
         Non si conta l'ultimo END, che corrisponde al fine programma.
         La funzione ritorna 1 se il caricamento va a buon fine, None altrimenti.
         """
-        self.halt = False # warning se l'istruzione HLT non viene trovata
-        
+        self.halt = False  # warning se l'istruzione HLT non viene trovata
+
         temp = codice.rstrip()
         temp = temp.split('\n')
-        for x in range(0,len(temp)):
+        for x in range(0, len(temp)):
             temp[x] = self.purgestr(temp[x])
         self.purge(temp)
         cod = []
-        
-        ### elimino commenti
+
+        # elimino commenti
         for x in temp:
             var = x.split('/')
             cod.append(var[0].rstrip())
-        
+
         self.purge(cod)
-        ### START
+        # START
         temp = cod[0].split()
         tempRAM = {}
-        
+
         if temp[0] == 'ORG':
-            if int(str(temp[1]),16)>-1 and int(str(temp[1]),16)<4096:
-                self.START = int(str(temp[1]),16)
+            if int(str(temp[1]), 16) > -1 and int(str(temp[1]), 16) < 4096:
+                self.START = int(str(temp[1]), 16)
                 self.PC = self.binario(self.START).zfill(12)
                 cod.pop(0)
-            else :
-                avviso("Errore di caricamento, ORG di inizio file non corretto!",style=ICON_ERROR)
+            else:
+                avviso(
+                    "Errore di caricamento, ORG di inizio file non corretto!", style=ICON_ERROR)
                 return None
-        else :
+        else:
             self.START = 0
             self.PC = self.binario(self.START).zfill(12)
-        
-        ### Elimino END
+
+        # Elimino END
         try:
             end = cod.index('END')
-            if end == len(cod)-1:
+            if end == len(cod) - 1:
                 cod.pop(end)
                 self.purge(cod)
             else:
                 raise Exception
         except Exception:
-            avviso("Errore di caricamento, Fine codice assembly (END) non trovato!",style=ICON_ERROR)
+            avviso(
+                "Errore di caricamento, Fine codice assembly (END) non trovato!", style=ICON_ERROR)
             return None
 
         origin = self.START
         count = 0
-        ### RAM temporanea
-        for x in range(0,len(cod)):
+        # RAM temporanea
+        for x in range(0, len(cod)):
             temp = cod[x]
             if temp[:3] == 'ORG':
                 tt = temp.split()
-                if int(str(tt[1]),16)<4096 and int(str(tt[1]),16)>-1:
-                    self.START = int(str(tt[1]),16)
+                if int(str(tt[1]), 16) < 4096 and int(str(tt[1]), 16) > -1:
+                    self.START = int(str(tt[1]), 16)
                     count = 0
                     continue
                 else:
-                    avviso("Errore di caricamento, ORG non corretto!",style=ICON_ERROR)
+                    avviso(
+                        "Errore di caricamento, ORG non corretto!", style=ICON_ERROR)
                     return None
-            tempRAM[self.START+count] = temp
+            tempRAM[self.START + count] = temp
             count += 1
 
         self.START = origin
-        ### LABEL
-        for x,y in sorted(tempRAM.iteritems()):
-            if y.find(',')>=0:
+        # LABEL
+        for x, y in sorted(tempRAM.iteritems()):
+            if y.find(',') >= 0:
                 temp = y.split(',')
                 self.purge(temp)
-                self.LABEL[self.purgestr(temp[0].lstrip())]= self.binario(x).zfill(12)
+                self.LABEL[self.purgestr(temp[0].lstrip())] = self.binario(
+                    x).zfill(12)
                 tempRAM[x] = temp[1]
-        
-        ### RAM
-        for x,y in sorted(tempRAM.iteritems()):
+
+        # RAM
+        for x, y in sorted(tempRAM.iteritems()):
             self.RAM[self.binario(x).zfill(12)] = y
-        
-        ### DEC e HEX e decodifica codici
+
+        # DEC e HEX e decodifica codici
         try:
-            for x,y in sorted(self.RAM.iteritems()):
+            for x, y in sorted(self.RAM.iteritems()):
                 temp = y.split(' ')
                 self.purge(temp)
-                for z in range(0,len(temp)):
+                for z in range(0, len(temp)):
                     temp[z] = self.purgestr(temp[z])
                 if len(temp) == 0:
                     continue
@@ -933,37 +921,41 @@ class pdp8(object):
                         self.range(int(temp[1]))).zfill(16)
                 elif temp[0] == 'HEX':
                     self.RAM[x] = self.binario(self.range
-                              (int(temp[1],16))).zfill(16)
-                elif len(temp)==2:
-                    if len(temp[0])!=3 :
+                                               (int(temp[1], 16))).zfill(16)
+                elif len(temp) == 2:
+                    if len(temp[0]) != 3:
                         raise Exception
                     else:
-                        self.RAM[x]= '0'+self.decode(temp[0])+self.decode(temp[1])
-                elif len(temp)==3:
-                    if len(temp[0])!=3 :
+                        self.RAM[x] = '0' + \
+                            self.decode(temp[0]) + self.decode(temp[1])
+                elif len(temp) == 3:
+                    if len(temp[0]) != 3:
                         raise Exception
                     else:
-                        self.RAM[x]= '1'+self.decode(temp[0])+self.decode(temp[1])
+                        self.RAM[x] = '1' + \
+                            self.decode(temp[0]) + self.decode(temp[1])
                 else:
-                    self.RAM[x]= self.decode(temp[0].lstrip())
+                    self.RAM[x] = self.decode(temp[0].lstrip())
         except Exception:
-            avviso("Errore di caricamento, correggere la seguente parola : "+str(y),style=ICON_ERROR)
+            avviso(
+                "Errore di caricamento, correggere la seguente parola : " + str(y), style=ICON_ERROR)
             return None
-        
-        for x,y in sorted(self.RAM.iteritems()):
+
+        for x, y in sorted(self.RAM.iteritems()):
             self.BREAKP[x] = False
-            if len(x)>12 or len(y)>16:
+            if len(x) > 12 or len(y) > 16:
                 return None
             if len(y) != 16:
                 self.RAM[x] = y.zfill(16)
-        
+
         self.nstep = 1
-        
+
         if not self.halt:
-            avviso("""Attenzione !!! Istruzione assembly HLT non presente!!! \n\n Questo puo' portare ad un errore il programma e \n si potrebbe uscire inaspettatamente dall'applicazione. \n\n Il programma verra' comunque caricato\n in memoria per essere eseguito.""",style=ICON_WARNING)
+            avviso(
+                """Attenzione !!! Istruzione assembly HLT non presente!!! \n\n Questo puo' portare ad un errore il programma e \n si potrebbe uscire inaspettatamente dall'applicazione. \n\n Il programma verra' comunque caricato\n in memoria per essere eseguito.""", style=ICON_WARNING)
         return 1
-    
-    def decode(self,x):
+
+    def decode(self, x):
         """
         Ritorna una stringa binaria corrispondente al comando passato
         """
@@ -976,27 +968,27 @@ class pdp8(object):
         else:
             if len(x) != 0:
                 return self.binario(
-                        self.range(
-                            int(str(x),16))).zfill(12)
-    
-    def setnstep(self,n):
+                    self.range(
+                        int(str(x), 16))).zfill(12)
+
+    def setnstep(self, n):
         """
         Setta il numero di cicli da eseguire
         """
         self.nstep = n
-    
+
     def startCD(self):
         """
         Avvia il Calcolatore Didattico
         """
         self.S = True
-    
+
     def stopCD(self):
         """
         Arresta il calcolatore di dattico
         """
         self.S = False
-    
+
     def statusRAM(self):
         """
         Ritorna una lista di n-uple di stringhe
@@ -1004,18 +996,18 @@ class pdp8(object):
         lista = []
         strlabel = ''
         stropcode = ''
-        for x,y in sorted(self.RAM.iteritems()):
+        for x, y in sorted(self.RAM.iteritems()):
             if self.BREAKP.has_key(x) and self.BREAKP[x]:
                 breakpoint = 'X'
-            else :
+            else:
                 breakpoint = '-'
-            for z,t in sorted(self.LABEL.iteritems()):
+            for z, t in sorted(self.LABEL.iteritems()):
                 if t == x:
                     strlabel = z
                     break
                 else:
                     strlabel = ''
-            for h,j in sorted(self.Opcodes.iteritems()):
+            for h, j in sorted(self.Opcodes.iteritems()):
                 if j == y[1:4]:
                     stropcode = h
                     break
@@ -1024,7 +1016,8 @@ class pdp8(object):
                     break
                 else:
                     stropcode = ''
-            lista.append((x,breakpoint,self.esadecimale(int(str(x),2)), y, strlabel,stropcode,str(self.range(int(y,2)))))
+            lista.append((x, breakpoint, self.esadecimale(
+                int(str(x), 2)), y, strlabel, stropcode, str(self.range(int(y, 2)))))
         return lista
 
     @staticmethod
@@ -1037,17 +1030,17 @@ class pdp8(object):
         tab = lista.count('\t')
         newline = lista.count('\n')
 
-        for x in range(0,vuoti):
+        for x in range(0, vuoti):
             lista.remove('')
-        for x in range(0,spazi):
+        for x in range(0, spazi):
             lista.remove(' ')
-        for x in range(0,tab):
+        for x in range(0, tab):
             lista.remove('\t')
-        for x in range(0,newline):
+        for x in range(0, newline):
             lista.remove('\n')
-        for x in range(0,len(lista)):
+        for x in range(0, len(lista)):
             lista[x] = lista[x].lstrip()
-    
+
     @staticmethod
     def purgestr(stringa):
         """
@@ -1059,30 +1052,30 @@ class pdp8(object):
         stringa = stringa.strip('\n')
         stringa = stringa.strip('\r')
         return stringa
-    
+
     @staticmethod
     def range(i):
         """
         Converte i nell'intervallo di rappresentabilit? degli interi.
         """
-        temp = i%65536
-        if i>32767:
-            return (temp-65536)
+        temp = i % 65536
+        if i > 32767:
+            return (temp - 65536)
         else:
             return temp
-    
+
     @staticmethod
     def binario(x):
         """
         Coverte un numero intero in una stringa binaria e
         ritorna una stringa binaria senza '0b' in testa
         """
-        if x<0:
-            temp = bin(65536+x)
+        if x < 0:
+            temp = bin(65536 + x)
         else:
             temp = bin(x)
         return temp[2:]
-    
+
     @staticmethod
     def esadecimale(x):
         """
@@ -1091,19 +1084,20 @@ class pdp8(object):
         """
         temp = hex(x)
         return temp[2:]
-    
+
     @staticmethod
-    def strand(a,b):
+    def strand(a, b):
         """
         Ritorna l'and tra i caratteri binari a e b
         """
         if a == '1' and b == '1':
             return ('1')
-        else :
+        else:
             return ('0')
 
+
 def run():
-    example = """ 	ORG 205
+    example = """   ORG 205
 CLA
 CLE
 ADD 20A
@@ -1115,6 +1109,6 @@ HLT
 END
         """
     CD = pdp8(example)
-    
+
 if __name__ == '__main__':
     sys.exit(run())
