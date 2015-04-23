@@ -1,6 +1,7 @@
 # py-pdp8-tk
 
-## _Emulatore di un calcolatore didattico (pdp8)._ ##
+Questo progetto realizza un _Emulatore di un calcolatore didattico (pdp8)_ .
+
 La nuova versione 2.0 utilizza una libreria grafica differente dalle versioni precedenti che sfruttano tkinter, più precisamente Tcl/tk. Al suo posto viene utilizzata wxWidgets (grazie al porting wxPython), per migliorare la compatibilità con i vari OS e per un miglior rendimento prestazionale.
 
 Si è scelto quindi di utilizzare wxPython a partire dalla versione 2.0.
