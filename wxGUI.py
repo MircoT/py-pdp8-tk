@@ -599,11 +599,11 @@ class FrameEmulatoreram(wx.Frame):
         Inizializzazione del frame
         """
         super(FrameEmulatoreram, self).__init__(
-            edit, -1, title="Pdp8 Emulator : RAM", style=wx.DEFAULT_DIALOG_STYLE, size=(575, 515))
+            edit, -1, title="Pdp8 Emulator : RAM", style=wx.DEFAULT_DIALOG_STYLE, size=(585, 560))
         icon = wx.Icon("data/logopypdp8small.png", wx.BITMAP_TYPE_PNG)
         self.SetIcon(icon)
-        self.SetMinSize((575, 515))
-        self.SetMaxSize((575, 515))
+        self.SetMinSize((585, 560))
+        self.SetMaxSize((600, 600))
         self.CreateStatusBar()
         self.PushStatusText("Info celle RAM : Val HEX | ADD HEX")
 
@@ -614,7 +614,7 @@ class FrameEmulatoreram(wx.Frame):
 
         # RAM
         self.ram = wx.ListCtrl(self.panram, -1, style=wx.LC_REPORT |
-                               wx.LC_HRULES | wx.LC_VRULES | wx.LC_SINGLE_SEL, size=(575, 500))
+                               wx.LC_HRULES | wx.LC_VRULES | wx.LC_SINGLE_SEL, size=(580, 500))
         self.ram.InsertColumn(0, "Ind BIN", wx.LIST_FORMAT_CENTER, 110)
         self.ram.InsertColumn(1, "Break", wx.LIST_FORMAT_CENTER, 50)
         self.ram.InsertColumn(2, "Ind HEX", wx.LIST_FORMAT_CENTER, 65)
