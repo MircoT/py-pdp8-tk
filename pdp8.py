@@ -450,7 +450,7 @@ class pdp8(object):
                 temp = bin(temp)[2:].zfill(17)
             else:
                 temp = bin(temp)[3:].zfill(17)
-            self.E = temp[0]
+            self.E = "1" if (self.AC[0] == "1" and self.MBR[0] == "1" and int(temp, 2) < 98304) or (self.AC[0] == "0" and self.MBR[0] == "0" and int(temp, 2) > 32767) else "0"
             self.AC = temp[1:]
             self.microistruzioni += "E-AC <- AC + MBR \n"
         elif self.tempo is 3:
