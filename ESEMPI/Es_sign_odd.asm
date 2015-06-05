@@ -1,0 +1,43 @@
+// Dato N controllare se e' pari o dispari
+// e se e' negativo o positivo
+
+ORG 100
+
+LDA N
+CIL
+SZE
+BUN NEG
+BUN POS
+
+NEG, LDA SIGN
+	CMA
+	STA SIGN
+	BUN AFT
+
+POS, LDA SIGN
+	INC
+	STA SIGN
+
+AFT, CLE
+	LDA N
+	CIR
+	SZE
+	BUN TO_O
+	BUN TO_E
+
+TO_O, LDA ODD
+	INC
+	STA ODD
+	BUN FINE
+
+TO_E, LDA ODD
+	CMA
+	STA ODD
+
+FINE, HLT
+
+N, DEC -4
+
+SIGN, DEC 0
+ODD, DEC 0
+END
