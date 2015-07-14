@@ -7,3 +7,8 @@ La nuova versione 2.0, presente nel branch pdp8-wxPython utilizza una libreria g
 Se avete bisogno di informazioni dettagliate andate qui : https://github.com/MircoT/py-pdp8-tk/blob/wiki/Help.md
 
 Per gli esempi svolti dovete seguire questo link : https://github.com/MircoT/py-pdp8-tk/blob/wiki/Esempi_svolti.md
+
+# Requisiti
+
+* Python 2.7
+* Tkinter / wxPython
