@@ -65,7 +65,7 @@ class pdp8(object):
             }
         if codice is not None:
             self.carica(codice.lstrip())
-    
+
     def breakpoint(self,stringa):
         """
         Aggiunge o toglie un breakpoint alla cella di memoria passata
@@ -77,7 +77,7 @@ class pdp8(object):
                 self.BREAKP[stringa] = False
         else:
             print ("\n!!! ERROR : Cella di memoria non presente !!!\n")
-    
+
     def step(self,root=None,codice=None):
         """
         Uno step equivale all'esecuzione dei seguenti cicli:
@@ -105,7 +105,7 @@ class pdp8(object):
         except Exception:
             showwarning("Errore", "Controllare il codice assembly!", parent = codice.master)
             self.S = False
-    
+
     def interrupt(self, root):
         """
         Input da tastiera ed output su video di caratteri ASCII (da 0 a 127)
@@ -188,7 +188,7 @@ class pdp8(object):
         else:
             self.F = False
             self.R = False
-    
+
     def _HLT(self):
         """
         Arresta il sistema
@@ -205,7 +205,7 @@ class pdp8(object):
             self.S = False
             self.microistruzioni += "S<- 0 \n"
             self.microistruzioni += "----- \n"
-            
+
     def _AND(self):
         """
         And logico tra AC e la cella indirizzata
@@ -228,7 +228,7 @@ class pdp8(object):
             self.F = False
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-        
+
     def _LDA(self):
         """
         Carica in AC il contenuto della cella indirizzata
@@ -251,7 +251,7 @@ class pdp8(object):
             self.F = False
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-        
+
     def _STA(self):
         """
         Salva nella cella indirizzata il contenuto di AC
@@ -271,7 +271,7 @@ class pdp8(object):
             self.F = False
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _BUN(self):
         """
         Salto incondizionato alla cella idirizzata
@@ -295,7 +295,7 @@ class pdp8(object):
             self.F = False
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _BSA(self):
         """
         Salvataggio del PC nella cella indirizzata e salto alla cella
@@ -326,7 +326,7 @@ class pdp8(object):
             self.F = False
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _ISZ(self):
         """
         Incrementa di 1 il contenuto della cella indirizzata e se il
@@ -361,7 +361,7 @@ class pdp8(object):
                 self.microistruzioni += "PC <- PC + 1 , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _INC(self):
         """
         Incrementa di 1 il contenuto di AC esteso con E
@@ -385,10 +385,10 @@ class pdp8(object):
             self.microistruzioni += "E-AC <- E-AC + 1 , "
             self.microistruzioni += "F<- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _ADD(self):
         """
-        Somma tra AC e la cella indirizzata
+        Somma tra AC e la cella indirizzata, con la segnalazione di overflow tramite il registro E
         """
         if self.tempo is 0:
             self.MAR = self.MBR[4:]
@@ -404,14 +404,15 @@ class pdp8(object):
                 temp = bin(temp)[2:].zfill(17)
             else:
                 temp = bin(temp)[3:].zfill(17)
-            self.E = "1" if (self.AC[0] == "1" and self.MBR[0] == "1" and int(temp, 2) < 98304) or (self.AC[0] == "0" and self.MBR[0] == "0" and int(temp, 2) > 32767) else "0"
+            if (self.AC[0] == "1" and self.MBR[0] == "1" and int(temp, 2) < 98304) or (self.AC[0] == "0" and self.MBR[0] == "0" and int(temp, 2) > 32767):
+                self.E = "1"
             self.AC = temp[1:]
             self.microistruzioni += "E-AC <- AC + MBR \n"
         elif self.tempo is 3:
             self.F = False
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _CLA(self):
         """
         Azzera il contenuto dell'accumulatore AC
@@ -430,7 +431,7 @@ class pdp8(object):
             self.microistruzioni += "AC <- 0 , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-            
+
     def _CLE(self):
         """
         Azzera il contenuto del registro E
@@ -449,7 +450,7 @@ class pdp8(object):
             self.microistruzioni += "E <- 0 , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _CMA(self):
         """
         Complementa logicamente il contenuto dell'accumulatore AC
@@ -474,7 +475,7 @@ class pdp8(object):
             self.microistruzioni += "AC <- AC' , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _CME(self):
         """
         Complementa logicamente il contenuto del registro E
@@ -496,7 +497,7 @@ class pdp8(object):
             self.microistruzioni += "E <- E' , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-        
+
     def _CIR(self):
         """
         Sposta verso destra i bit in E-AC
@@ -518,7 +519,7 @@ class pdp8(object):
             self.microistruzioni += "E-AC <- bit1 - E - (AC \ bit1) , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _CIL(self):
         """
         Sposta verso sinistra i bit in E-AC
@@ -540,10 +541,10 @@ class pdp8(object):
             self.microistruzioni += "E-AC <- AC-E , "
             self.microistruzioni += "F<- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _SPA(self):
         """
-        Salta l'istruzione successiva se il contenuto di AC > 0
+        Salta l'istruzione successiva se il contenuto di AC è positivo o pari a 0
         """
         if self.tempo is 0:
             self.microistruzioni += '\n'
@@ -554,8 +555,7 @@ class pdp8(object):
         elif self.tempo is 2:
             self.microistruzioni += "NOP \n"
         elif self.tempo is 3:
-            temp = self.range(int(self.AC,2))
-            if temp > 0:
+            if self.AC[0] == '0':
                 tp = int(self.PC,2)+1
                 self.PC = self.binario(tp).zfill(12)
             line = 0
@@ -565,10 +565,10 @@ class pdp8(object):
                     break
                 line += 1
             self.F = False
-            self.microistruzioni += "if(AC>0) : PC <- PC+1 , "
+            self.microistruzioni += "if(AC(1)=0) : PC <- PC+1 , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _SNA(self):
         """
         Salta l'istruzione successiva se il contenuto di AC < 0
@@ -596,7 +596,7 @@ class pdp8(object):
             self.microistruzioni += "if(AC<0) : PC <- PC+1 , "
             self.microistruzioni += "F<- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _SZA(self):
         """
         Salta l'istruzione successiva se il contenuto di AC = 0
@@ -624,7 +624,7 @@ class pdp8(object):
             self.microistruzioni += "if(AC=0) : PC <- PC+1 , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def _SZE(self):
         """
         Salta l'istruzione successiva se il contenuto di E = 0
@@ -651,7 +651,7 @@ class pdp8(object):
             self.microistruzioni += "if(E=0) : PC <- PC+1 , "
             self.microistruzioni += "F <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def execute(self):
         """
         Esecuzione dell'operazione. Se non presente, F torna a 0 per
@@ -701,7 +701,7 @@ class pdp8(object):
                 self._ISZ()
             else:
                 self.F = False
-    
+
     def indind(self):
         """
         Ciclo di indirizzamento indiretto
@@ -721,7 +721,7 @@ class pdp8(object):
             self.R = False
             self.microistruzioni += "F <- 1 , R <- 0 \n"
             self.microistruzioni += "----- \n"
-    
+
     def fetch(self):
         """
         Ciclo di fetch
@@ -759,32 +759,32 @@ class pdp8(object):
             else :
                 self.F = True
                 self.microistruzioni += "F <- 1 \n"
-        
+
     def carica(self,codice,master):
         """
-        Carica il codice assembly in memoria. 
+        Carica il codice assembly in memoria.
         Non si conta l'ultimo END, che corrisponde al fine programma.
         La funzione ritorna 1 se il caricamento va a buon fine, None altrimenti.
         """
         self.halt = False # warning se l'istruzione HLT non viene trovata
-        
+
         temp = codice.rstrip()
         temp = temp.split('\n')
         for x in range(0,len(temp)):
             temp[x] = self.purgestr(temp[x])
         self.purge(temp)
         cod = []
-        
+
         ### elimino commenti
         for x in temp:
             var = x.split('/')
             cod.append(var[0].rstrip())
-        
+
         self.purge(cod)
         ### START
         temp = cod[0].split()
         tempRAM = {}
-        
+
         if temp[0] == 'ORG':
             if int(str(temp[1]),16)>-1 and int(str(temp[1]),16)<4096:
                 self.START = int(str(temp[1]),16)
@@ -796,7 +796,7 @@ class pdp8(object):
         else :
             self.START = 0
             self.PC = self.binario(self.START).zfill(12)
-        
+
         ### Elimino END
         try:
             end = cod.index('END')
@@ -834,11 +834,11 @@ class pdp8(object):
                 self.purge(temp)
                 self.LABEL[self.purgestr(temp[0].lstrip())]= self.binario(x).zfill(12)
                 tempRAM[x] = temp[1]
-        
+
         ### RAM
         for x,y in sorted(tempRAM.iteritems()):
             self.RAM[self.binario(x).zfill(12)] = y
-        
+
         ### DEC e HEX e decodifica codici
         try:
             for x,y in sorted(self.RAM.iteritems()):
@@ -869,23 +869,23 @@ class pdp8(object):
         except Exception:
             showwarning("Errore di caricamento", "Correggere : "+str(y), parent = master.codice.master)
             return None
-        
+
         for x,y in sorted(self.RAM.iteritems()):
             self.BREAKP[x] = False
             if len(x)>12 or len(y)>16:
                 return None
             if len(y) != 16:
                 self.RAM[x] = y.zfill(16)
-        
+
         self.nstep = 1
-        
+
         if not self.halt:
             showwarning("Attenzione !!!",
                         """Istruzione assembly HLT non presente!!!
                         \nQuesto può portare ad un errore il programma, per esempio a causa di un ciclo infinito;
                         \nQuindi si potrebbe uscire inaspettatamente dall'applicazione.""", parent = master.master)
         return 1
-    
+
     def decode(self,x):
         """
         Ritorna una stringa binaria corrispondente al comando passato
@@ -901,25 +901,25 @@ class pdp8(object):
                 return self.binario(
                         self.range(
                             int(str(x),16))).zfill(12)
-    
+
     def setnstep(self,n):
         """
         Setta il numero di cicli da eseguire
         """
         self.nstep = n
-    
+
     def startCD(self):
         """
         Avvia il Calcolatore Didattico
         """
         self.S = True
-    
+
     def stopCD(self):
         """
         Arresta il calcolatore di dattico
         """
         self.S = False
-    
+
     def __str__(self):
         """
         Stampa a video lo stato del Calcolatore Didattico
@@ -930,7 +930,7 @@ class pdp8(object):
         stringa += self.label()
         stringa += self.uc()
         return stringa
-    
+
     def statusRAM(self):
         """
         Ritorna una stringa con lo stato della RAM
@@ -965,7 +965,7 @@ class pdp8(object):
                                str(self.range(int(y,2))))
         stringa += "--------------------------------------------------------------------------------"+"\n"
         return stringa
-    
+
     def statusREG(self):
         """
         Ritorna una stringa con lo stato dei registri
@@ -979,7 +979,7 @@ class pdp8(object):
         stringa += ("MBR\t= "+str(self.MBR)+"\n")
         stringa += ("------------------------------------------""\n")
         return stringa
-    
+
     def label(self):
         """
         Ritorna una stringa con i label memorizzati
@@ -990,7 +990,7 @@ class pdp8(object):
             stringa += str(x)+' = '+str(y)+'\n'
         stringa += ("-----------------------""\n")
         return stringa
-    
+
     def uc(self):
         """
         Ritorna una stringa con lo stato dell'unita' di controllo
@@ -1003,7 +1003,7 @@ class pdp8(object):
         stringa += 'Int =\t'+str(self.Interrupt)+'\n'
         stringa += ("-------------""\n")
         return stringa
-        
+
     @staticmethod
     def purge(lista):
         """
@@ -1024,7 +1024,7 @@ class pdp8(object):
             lista.remove('\n')
         for x in range(0,len(lista)):
             lista[x] = lista[x].lstrip()
-    
+
     @staticmethod
     def purgestr(stringa):
         """
@@ -1036,18 +1036,18 @@ class pdp8(object):
         stringa = stringa.strip('\n')
         stringa = stringa.strip('\r')
         return stringa
-    
+
     @staticmethod
     def range(i):
         """
-        Converte i nell'intervallo di rappresentabilit? degli interi.
+        Converte i nell'intervallo di rappresentabilità degli interi
         """
         temp = i%65536
         if i>32767:
             return (temp-65536)
         else:
             return temp
-    
+
     @staticmethod
     def binario(x):
         """
@@ -1059,7 +1059,7 @@ class pdp8(object):
         else:
             temp = bin(x)
         return temp[2:]
-    
+
     @staticmethod
     def esadecimale(x):
         """
@@ -1068,7 +1068,7 @@ class pdp8(object):
         """
         temp = hex(x)
         return temp[2:]
-    
+
     @staticmethod
     def strand(a,b):
         """
@@ -1092,6 +1092,6 @@ HLT
 END
         """
     CD = pdp8(example)
-    
+
 if __name__ == '__main__':
     sys.exit(run())
