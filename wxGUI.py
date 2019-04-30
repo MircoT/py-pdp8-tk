@@ -579,7 +579,9 @@ class FrameEmulatorecontrol(wx.Frame):
             pass
 
         self.last = temppc
-        self.ram.EnsureVisible(temppc)
+
+        if temppc >=0:
+            self.ram.EnsureVisible(temppc)
 
     def OnExit(self, event):
         """
