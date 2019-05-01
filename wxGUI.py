@@ -893,7 +893,7 @@ ESEGUI = Esegue il codice fino all'istruzione HLT, che arresta la macchina."""
             with open(percorso, "rb") as handle:
                 testo = handle.read()
                 self.testo.ClearAll()
-                self.testo.AddTextUTF8(testo)
+                self.testo.AddText(testo)
                 self.file = percorso
                 self.testo.SetSavePoint()
 
