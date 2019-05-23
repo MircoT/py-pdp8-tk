@@ -376,7 +376,7 @@ class FrameEmulatorecontrol(wx.Frame):
         Setta il numero di step da eseguire
         """
         dlg = wx.TextEntryDialog(
-            self, "Inserire il numero di Step", "n Step", defaultValue='1')
+            self, "Inserire il numero di Step", "n Step", value='1')
         if dlg.ShowModal() == wx.ID_OK:
             try:
                 if int(dlg.GetValue()) > 0:
@@ -396,7 +396,7 @@ class FrameEmulatorecontrol(wx.Frame):
         Setta il tempo di aggiornamento
         """
         dlg = wx.TextEntryDialog(
-            self, "Inserisci il tempo di aggiornamento \n Min = 10 millisecondi", "Set Delay", defaultValue='100')
+            self, "Inserisci il tempo di aggiornamento \n Min = 10 millisecondi", "Set Delay", value='100')
         if dlg.ShowModal() == wx.ID_OK:
             try:
                 if int(dlg.GetValue()) > 9:
