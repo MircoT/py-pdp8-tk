@@ -37,8 +37,6 @@ jobs:
       - name: Install dependencies - windows
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m venv myvenv
-          . .\myvenv\Scripts\Activate.ps1
           python3 -m pip install pyinstaller
         if: matrix.os == 'windows-latest'
 
@@ -54,7 +52,7 @@ jobs:
         if: matrix.os == 'macos-latest'
       - name: Make executable - windows
         run: |
-          .\myvenv\Scripts\pyinstaller.exe -F -w --name pdp8.exe __main__.py
+          pyinstaller.exe -F -w --name pdp8.exe __main__.py
         if: matrix.os == 'windows-latest'
 
       - name: Upload release binary - ubuntu
