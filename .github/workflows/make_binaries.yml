@@ -19,7 +19,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [
+          ubuntu-latest,
+          #macos-latest, 
+          #windows-latest
+        ]
         python-version: [3.8]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -33,6 +37,7 @@ jobs:
       - name: Make executable
         run: |
           /home/runner/.local/bin/pyinstaller -F -w --name pdp8-${{ matrix.os }} __main__.py
+          ls -altrh dist
       - name: Upload release binaries
         uses: alexellis/upload-assets@0.3.0
         env:
