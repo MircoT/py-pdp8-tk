@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 
-'''
+"""
 Created on Jun 23, 2011
 
 @author: Mirco Tracolli
-'''
+"""
 import wx
 import wx.stc as stc
 from pdp8 import pdp8
@@ -23,8 +23,7 @@ class APP(wx.App):
         """
         self.editor = FileEditorFrame()
         self.emulatorram = FrameEmulatoreram(self.editor)
-        self.controlli = FrameEmulatorecontrol(
-            self.editor, self.emulatorram.ram)
+        self.controlli = FrameEmulatorecontrol(self.editor, self.emulatorram.ram)
         self.SetExitOnFrameDelete(True)
         self.editor.Show()
         self.emulatorram.Show()
@@ -43,7 +42,12 @@ class FrameEmulatorecontrol(wx.Frame):
         Inizializzazione del frame
         """
         super(FrameEmulatorecontrol, self).__init__(
-            edit, -1, title="Pdp8 Emulator : Monitor & Controls", style=wx.DEFAULT_DIALOG_STYLE, size=wx.Size(520, 610))
+            edit,
+            -1,
+            title="Pdp8 Emulator : Monitor & Controls",
+            style=wx.DEFAULT_DIALOG_STYLE,
+            size=wx.Size(520, 610),
+        )
         icon = wx.Icon("data/logopypdp8small.png", wx.BITMAP_TYPE_PNG)
         self.SetIcon(icon)
         self.SetMinSize((520, 610))
@@ -57,60 +61,69 @@ class FrameEmulatorecontrol(wx.Frame):
         self.panpulsanti = wx.Panel(self, -1, style=wx.SIMPLE_BORDER)
 
         # Pulsanti
-        self.loadb = wx.Button(self.panpulsanti, 0, 'LOAD')
-        self.stepb = wx.Button(self.panpulsanti, 1, 'Step')
-        self.ministepb = wx.Button(self.panpulsanti, 2, 'miniStep')
-        self.microstepb = wx.Button(self.panpulsanti, 3, 'microStep')
-        self.setnstepb = wx.Button(self.panpulsanti, 4, 'Set n Step')
-        self.setdelayb = wx.Button(self.panpulsanti, 5, 'Set Delay')
-        self.startb = wx.Button(self.panpulsanti, 6, 'START')
-        self.resetb = wx.Button(self.panpulsanti, 7, 'RESET')
-        self.stopb = wx.Button(self.panpulsanti, 8, 'STOP')
-        self.breakb = wx.Button(self.panpulsanti, 9, 'BREAK')
-        self.continuab = wx.Button(self.panpulsanti, 10, 'CONTINUA')
-        self.eseguib = wx.Button(self.panpulsanti, 11, 'ESEGUI')
+        self.loadb = wx.Button(self.panpulsanti, 0, "LOAD")
+        self.stepb = wx.Button(self.panpulsanti, 1, "Step")
+        self.ministepb = wx.Button(self.panpulsanti, 2, "miniStep")
+        self.microstepb = wx.Button(self.panpulsanti, 3, "microStep")
+        self.setnstepb = wx.Button(self.panpulsanti, 4, "Set n Step")
+        self.setdelayb = wx.Button(self.panpulsanti, 5, "Set Delay")
+        self.startb = wx.Button(self.panpulsanti, 6, "START")
+        self.resetb = wx.Button(self.panpulsanti, 7, "RESET")
+        self.stopb = wx.Button(self.panpulsanti, 8, "STOP")
+        self.breakb = wx.Button(self.panpulsanti, 9, "BREAK")
+        self.continuab = wx.Button(self.panpulsanti, 10, "CONTINUA")
+        self.eseguib = wx.Button(self.panpulsanti, 11, "ESEGUI")
 
         # In/out e microistruzioni
         self.inout = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_MULTILINE | wx.TE_READONLY, size=(265, 100))
+            self.panpulsanti, style=wx.TE_MULTILINE | wx.TE_READONLY, size=(265, 100)
+        )
         self.inout.SetBackgroundColour("#000000")
         self.inout.SetForegroundColour("#00FF00")
+        self.inout.SetDefaultStyle(wx.TextAttr(wx.GREEN))
         self.microistr = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_MULTILINE | wx.TE_READONLY, size=(265, 150))
+            self.panpulsanti, style=wx.TE_MULTILINE | wx.TE_READONLY, size=(265, 150)
+        )
         self.nsteplabel = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_READONLY, size=(75, 25))
+            self.panpulsanti, style=wx.TE_READONLY, size=(75, 25)
+        )
         self.delaylabel = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_READONLY, size=(75, 25))
+            self.panpulsanti, style=wx.TE_READONLY, size=(75, 25)
+        )
         self.tempolabel = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_READONLY, size=(75, 25))
+            self.panpulsanti, style=wx.TE_READONLY, size=(75, 25)
+        )
         self.pclabel = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_READONLY, size=(110, 25))
+            self.panpulsanti, style=wx.TE_READONLY, size=(110, 25)
+        )
         self.pclabel.SetBackgroundColour("#FF0000")
         self.marlabel = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_READONLY, size=(110, 25))
+            self.panpulsanti, style=wx.TE_READONLY, size=(110, 25)
+        )
         self.marlabel.SetBackgroundColour("#FFFF00")
         self.mbrlabel = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_READONLY, size=(140, 25))
+            self.panpulsanti, style=wx.TE_READONLY, size=(140, 25)
+        )
         self.oprlabel = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_READONLY, size=(35, 25))
-        self.ilabel = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_READONLY, size=(25, 25))
-        self.elabel = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_READONLY, size=(25, 25))
+            self.panpulsanti, style=wx.TE_READONLY, size=(35, 25)
+        )
+        self.ilabel = wx.TextCtrl(self.panpulsanti, style=wx.TE_READONLY, size=(25, 25))
+        self.elabel = wx.TextCtrl(self.panpulsanti, style=wx.TE_READONLY, size=(25, 25))
         self.aclabel = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_READONLY, size=(140, 25))
+            self.panpulsanti, style=wx.TE_READONLY, size=(140, 25)
+        )
         self.acintlabel = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_READONLY, size=(130, 25))
+            self.panpulsanti, style=wx.TE_READONLY, size=(130, 25)
+        )
         self.achexlabel = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_READONLY, size=(130, 25))
-        self.slabel = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_READONLY, size=(30, 25))
-        self.flabel = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_READONLY, size=(45, 25))
-        self.rlabel = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_READONLY, size=(45, 25))
+            self.panpulsanti, style=wx.TE_READONLY, size=(130, 25)
+        )
+        self.slabel = wx.TextCtrl(self.panpulsanti, style=wx.TE_READONLY, size=(30, 25))
+        self.flabel = wx.TextCtrl(self.panpulsanti, style=wx.TE_READONLY, size=(45, 25))
+        self.rlabel = wx.TextCtrl(self.panpulsanti, style=wx.TE_READONLY, size=(45, 25))
         self.intlabel = wx.TextCtrl(
-            self.panpulsanti, style=wx.TE_READONLY, size=(45, 25))
+            self.panpulsanti, style=wx.TE_READONLY, size=(45, 25)
+        )
 
         font = wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD)
         titolo1 = wx.StaticText(self.panpulsanti, -1, "   IN/OUT")
@@ -143,8 +156,7 @@ class FrameEmulatorecontrol(wx.Frame):
         titolo14.SetFont(font)
         titolo15 = wx.StaticText(self.panpulsanti, -1, " AC (HEX)   ")
         titolo15.SetFont(font)
-        titolo16 = wx.StaticText(
-            self.panpulsanti, -1, "   Unita' di controllo")
+        titolo16 = wx.StaticText(self.panpulsanti, -1, "   Unita' di controllo")
         titolo16.SetFont(font)
         titolo17 = wx.StaticText(self.panpulsanti, -1, "           S")
         titolo17.SetFont(font)
@@ -169,8 +181,7 @@ class FrameEmulatorecontrol(wx.Frame):
         pulhor.Add(self.breakb, (3, 0), (1, 1))
         pulhor.Add(self.continuab, (3, 1), (1, 1))
         pulhor.Add(self.eseguib, (3, 2), (1, 1))
-        pulhor.Add(
-            wx.StaticLine(self.panpulsanti, -1, size=(265, 3)), (4, 0), (1, 3))
+        pulhor.Add(wx.StaticLine(self.panpulsanti, -1, size=(265, 3)), (4, 0), (1, 3))
         pulhor.Add(titolo1, (5, 0), (1, 3))
         pulhor.Add(self.inout, (6, 0), (3, 3))
         pulhor.Add(titolo2, (9, 0), (1, 3))
@@ -181,8 +192,11 @@ class FrameEmulatorecontrol(wx.Frame):
         pulhor.Add(self.delaylabel, (14, 1), (1, 1))
         pulhor.Add(titolo5, (15, 0), (1, 1))
         pulhor.Add(self.tempolabel, (15, 1), (1, 1))
-        pulhor.Add(wx.StaticLine(
-            self.panpulsanti, -1, size=(3, 545), style=wx.LI_VERTICAL), (0, 4), (16, 1))
+        pulhor.Add(
+            wx.StaticLine(self.panpulsanti, -1, size=(3, 545), style=wx.LI_VERTICAL),
+            (0, 4),
+            (16, 1),
+        )
         pulhor.Add(titolo6, (0, 5), (1, 3))
         pulhor.Add(self.pclabel, (1, 5), (1, 2))
         pulhor.Add(titolo7, (1, 7), (1, 1))
@@ -202,8 +216,7 @@ class FrameEmulatorecontrol(wx.Frame):
         pulhor.Add(titolo14, (8, 7), (1, 1))
         pulhor.Add(self.achexlabel, (9, 5), (1, 2))
         pulhor.Add(titolo15, (9, 7), (1, 1))
-        pulhor.Add(
-            wx.StaticLine(self.panpulsanti, -1, size=(200, 3)), (10, 5), (1, 3))
+        pulhor.Add(wx.StaticLine(self.panpulsanti, -1, size=(200, 3)), (10, 5), (1, 3))
         pulhor.Add(titolo16, (11, 5), (1, 3))
         pulhor.Add(titolo17, (12, 5), (1, 1))
         pulhor.Add(self.slabel, (12, 6), (1, 1))
@@ -250,7 +263,8 @@ class FrameEmulatorecontrol(wx.Frame):
         Aggiunge un break nel flusso di esecuzione del programma
         """
         dlg = wx.TextEntryDialog(
-            self, "Inserire un indirizzo di memoria in esadecimale", "Breakpoints")
+            self, "Inserire un indirizzo di memoria in esadecimale", "Breakpoints"
+        )
         if dlg.ShowModal() == wx.ID_OK:
             try:
                 temp = self.CD.binario(int(dlg.GetValue(), 16)).zfill(12)
@@ -261,7 +275,8 @@ class FrameEmulatorecontrol(wx.Frame):
                 self.SetStatusText("Breakpoint inserito")
             except Exception:
                 wx.MessageBox(
-                    "Errore, indirizzo indicato non corretto!", style=wx.ICON_ERROR)
+                    "Errore, indirizzo indicato non corretto!", style=wx.ICON_ERROR
+                )
         dlg.Destroy()
 
     def OnContinua(self, event):
@@ -285,7 +300,7 @@ class FrameEmulatorecontrol(wx.Frame):
                 self.previstr = self.last
                 self.AggiornaALL()
                 self.SetStatusText("Eseguo il programma")
-                self.CD.microistruzionistep = ''
+                self.CD.microistruzionistep = ""
                 break
         if self.CD.S:
             wx.CallLater(self.delay, self.OnEsegui)
@@ -332,7 +347,7 @@ class FrameEmulatorecontrol(wx.Frame):
                     self.AggiornaALL()
                     self.SetStatusText("Eseguito uno Step")
                     var = False
-                    self.CD.microistruzionistep = ''
+                    self.CD.microistruzionistep = ""
             if not self.CD.S:
                 self.previstr = self.last
             if self.CD.nstep > 0:
@@ -376,7 +391,8 @@ class FrameEmulatorecontrol(wx.Frame):
         Setta il numero di step da eseguire
         """
         dlg = wx.TextEntryDialog(
-            self, "Inserire il numero di Step", "n Step", value='1')
+            self, "Inserire il numero di Step", "n Step", value="1"
+        )
         if dlg.ShowModal() == wx.ID_OK:
             try:
                 if int(dlg.GetValue()) > 0:
@@ -384,10 +400,10 @@ class FrameEmulatorecontrol(wx.Frame):
                     self.SetStatusText("Settato numero di step")
                 else:
                     wx.MessageBox(
-                        "Errore, numero step non corretto", style=wx.ICON_ERROR)
+                        "Errore, numero step non corretto", style=wx.ICON_ERROR
+                    )
             except ValueError:
-                wx.MessageBox(
-                    "Errore, numero step non corretto", style=wx.ICON_ERROR)
+                wx.MessageBox("Errore, numero step non corretto", style=wx.ICON_ERROR)
         self.AggiornaUC()
         dlg.Destroy()
 
@@ -396,7 +412,11 @@ class FrameEmulatorecontrol(wx.Frame):
         Setta il tempo di aggiornamento
         """
         dlg = wx.TextEntryDialog(
-            self, "Inserisci il tempo di aggiornamento \n Min = 10 millisecondi", "Set Delay", value='100')
+            self,
+            "Inserisci il tempo di aggiornamento \n Min = 10 millisecondi",
+            "Set Delay",
+            value="100",
+        )
         if dlg.ShowModal() == wx.ID_OK:
             try:
                 if int(dlg.GetValue()) > 9:
@@ -404,10 +424,13 @@ class FrameEmulatorecontrol(wx.Frame):
                     self.SetStatusText("Settato tempo di aggiornamento")
                 else:
                     wx.MessageBox(
-                        "Errore, tempo di aggiornamento non corretto", style=wx.ICON_ERROR)
+                        "Errore, tempo di aggiornamento non corretto",
+                        style=wx.ICON_ERROR,
+                    )
             except ValueError:
                 wx.MessageBox(
-                    "Errore, tempo di aggiornamento non corretto", style=wx.ICON_ERROR)
+                    "Errore, tempo di aggiornamento non corretto", style=wx.ICON_ERROR
+                )
         self.delaylabel.Clear()
         self.delaylabel.AppendText(str(self.delay))
         dlg.Destroy()
@@ -419,12 +442,14 @@ class FrameEmulatorecontrol(wx.Frame):
         self.OnReset(event)
         testo = self.editor.testo.GetText()
         if len(testo.lstrip().rstrip()) == 0:
-            wx.MessageBox("Nessun file assembly presente nell'editor.",
-                          style=wx.CENTER | wx.ICON_EXCLAMATION | wx.OK)
+            wx.MessageBox(
+                "Nessun file assembly presente nell'editor.",
+                style=wx.CENTER | wx.ICON_EXCLAMATION | wx.OK,
+            )
         else:
             self.CD = pdp8()
             var = self.CD.carica(testo)
-            if var is 1:
+            if var == 1:
                 self.AggiornaALL()
                 self.SetStatusText("Caricamento del file assembly effettuato")
             else:
@@ -446,7 +471,7 @@ class FrameEmulatorecontrol(wx.Frame):
         """
         if self.CD.inout is not None:
             self.inout.AppendText(self.CD.inout)
-        if self.CD.microistruzioni != '':
+        if self.CD.microistruzioni != "":
             self.microistr.AppendText(self.CD.microistruzionistep)
 
     def AggiornaUC(self):
@@ -454,12 +479,12 @@ class FrameEmulatorecontrol(wx.Frame):
         Aggiorna l'unita' di controllo
         """
         if self.CD.S and not self.CD.breaks:
-            self.slabel.SetBackgroundColour('#00FF00')
+            self.slabel.SetBackgroundColour("#00FF00")
         elif not self.CD.S and self.CD.breaks:
-            self.slabel.SetBackgroundColour('#0000F0')
+            self.slabel.SetBackgroundColour("#0000F0")
             self.SetStatusText("Macchina in Pausa")
         else:
-            self.slabel.SetBackgroundColour('#FF0000')
+            self.slabel.SetBackgroundColour("#FF0000")
 
         self.flabel.Clear()
         self.rlabel.Clear()
@@ -495,8 +520,7 @@ class FrameEmulatorecontrol(wx.Frame):
         self.acintlabel.Clear()
         self.acintlabel.AppendText(str(self.CD.range(int(self.CD.AC, 2))))
         self.achexlabel.Clear()
-        self.achexlabel.AppendText(
-            str((hex(int(self.CD.AC, 2))[2:].upper())).zfill(4))
+        self.achexlabel.AppendText(str((hex(int(self.CD.AC, 2))[2:].upper())).zfill(4))
 
     def AggiornaRAM(self):
         """
@@ -505,7 +529,7 @@ class FrameEmulatorecontrol(wx.Frame):
 
         for x in range(0, self.ram.GetItemCount()):
             if (255, 255, 255, 255) != self.ram.GetItemBackgroundColour(x):
-                self.ram.SetItemBackgroundColour(x, '#FFFFFF')
+                self.ram.SetItemBackgroundColour(x, "#FFFFFF")
 
         # Aggiornamento delle differenza (per evitare sfarfallii)
         if self.ram.GetItemCount() > 0 and len(self.CD.RAM) == self.ram.GetItemCount():
@@ -517,30 +541,29 @@ class FrameEmulatorecontrol(wx.Frame):
                     ind = self.ram.GetItem(z, 0).GetText()
                     con = self.ram.GetItem(z, 3).GetText()
                     # Aggiornamento breakpoint
-                    breakpoint = ''
+                    breakpoint = ""
                     if ind == x:
-                        if self.CD.BREAKP.has_key(x) and self.CD.BREAKP[x]:
-                            breakpoint = 'X'
+                        if x in self.CD.BREAKP and self.CD.BREAKP[x]:
+                            breakpoint = "X"
                         else:
-                            breakpoint = '-'
-                        self.ram.SetStringItem(z, 1, breakpoint)
+                            breakpoint = "-"
+                        self.ram.SetItem(z, 1, breakpoint)
                         # Aggiornamento contenuto, opcode e val intero
                         if con != y:
-                            stropcode = ''
-                            for h, j in sorted(self.CD.Opcodes.iteritems()):
+                            stropcode = ""
+                            for h, j in sorted(self.CD.Opcodes.items()):
                                 if j == y[1:4]:
                                     stropcode = h
                                     break
-                                elif j == y and (j[:4] == '0111' or j[:4] == '1111'):
+                                elif j == y and (j[:4] == "0111" or j[:4] == "1111"):
                                     stropcode = h
                                     break
                                 else:
-                                    stropcode = ''
+                                    stropcode = ""
 
-                            self.ram.SetStringItem(z, 3, y)
-                            self.ram.SetStringItem(z, 5, stropcode)
-                            self.ram.SetStringItem(
-                                z, 6, str(self.CD.range(int(y, 2))))
+                            self.ram.SetItem(z, 3, y)
+                            self.ram.SetItem(z, 5, stropcode)
+                            self.ram.SetItem(z, 6, str(self.CD.range(int(y, 2))))
                             break
                 self.CD.modd = False
         else:
@@ -562,25 +585,25 @@ class FrameEmulatorecontrol(wx.Frame):
         try:
             if temppc == tempmar:
                 if self.previstr != -1:
-                    self.ram.SetItemBackgroundColour(self.previstr, '#00FF00')
-                self.ram.SetItemBackgroundColour(temppc, '#C0C0C0')
+                    self.ram.SetItemBackgroundColour(self.previstr, "#00FF00")
+                self.ram.SetItemBackgroundColour(temppc, "#C0C0C0")
             elif tempmar == self.previstr:
-                self.ram.SetItemBackgroundColour(tempmar, '#00F0F0')
-                self.ram.SetItemBackgroundColour(temppc, '#FF0000')
+                self.ram.SetItemBackgroundColour(tempmar, "#00F0F0")
+                self.ram.SetItemBackgroundColour(temppc, "#FF0000")
             else:
                 if tempmar != -2:
-                    self.ram.SetItemBackgroundColour(tempmar, '#FFFF00')
+                    self.ram.SetItemBackgroundColour(tempmar, "#FFFF00")
                 if self.previstr != -1:
-                    self.ram.SetItemBackgroundColour(self.previstr, '#00FF00')
+                    self.ram.SetItemBackgroundColour(self.previstr, "#00FF00")
                 if temppc != -1:
-                    self.ram.SetItemBackgroundColour(temppc, '#FF0000')
+                    self.ram.SetItemBackgroundColour(temppc, "#FF0000")
 
         except Exception:
             pass
 
         self.last = temppc
 
-        if temppc >=0:
+        if temppc >= 0:
             self.ram.EnsureVisible(temppc)
 
     def OnExit(self, event):
@@ -601,7 +624,12 @@ class FrameEmulatoreram(wx.Frame):
         Inizializzazione del frame
         """
         super(FrameEmulatoreram, self).__init__(
-            edit, -1, title="Pdp8 Emulator : RAM", style=wx.DEFAULT_DIALOG_STYLE, size=(585, 560))
+            edit,
+            -1,
+            title="Pdp8 Emulator : RAM",
+            style=wx.DEFAULT_DIALOG_STYLE,
+            size=(585, 560),
+        )
         icon = wx.Icon("data/logopypdp8small.png", wx.BITMAP_TYPE_PNG)
         self.SetIcon(icon)
         self.SetMinSize((585, 560))
@@ -615,8 +643,12 @@ class FrameEmulatoreram(wx.Frame):
         self.panram = wx.Panel(self)
 
         # RAM
-        self.ram = wx.ListCtrl(self.panram, -1, style=wx.LC_REPORT |
-                               wx.LC_HRULES | wx.LC_VRULES | wx.LC_SINGLE_SEL, size=(580, 500))
+        self.ram = wx.ListCtrl(
+            self.panram,
+            -1,
+            style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES | wx.LC_SINGLE_SEL,
+            size=(580, 500),
+        )
         self.ram.InsertColumn(0, "Ind BIN", wx.LIST_FORMAT_CENTER, 110)
         self.ram.InsertColumn(1, "Break", wx.LIST_FORMAT_CENTER, 50)
         self.ram.InsertColumn(2, "Ind HEX", wx.LIST_FORMAT_CENTER, 65)
@@ -637,13 +669,17 @@ class FrameEmulatoreram(wx.Frame):
     def OnSelected(self, event):
         """
         Stampa il contenuto in esadecimale dell'indirizzo selezionato
-        e la parte indirizzo (ADD = address) del contenuto 
+        e la parte indirizzo (ADD = address) del contenuto
         della cella selezionata
         """
         riga = event.GetIndex()
         contenuto = self.ram.GetItem(riga, 3).GetText()
-        self.PushStatusText("Contenuto HEX = " + str(hex(int(contenuto, 2))[2:].upper().zfill(
-            4)) + " | ADD (HEX) = " + str(hex(int(contenuto[4:], 2))[2:].upper().zfill(3)))
+        self.PushStatusText(
+            "Contenuto HEX = "
+            + str(hex(int(contenuto, 2))[2:].upper().zfill(4))
+            + " | ADD (HEX) = "
+            + str(hex(int(contenuto[4:], 2))[2:].upper().zfill(3))
+        )
 
     def OnExit(self, event):
         """
@@ -663,7 +699,8 @@ class FileEditorFrame(wx.Frame):
         Inizializzazione del frame
         """
         super(FileEditorFrame, self).__init__(
-            None, -1, "Assembly File Editor", style=wx.CENTER | wx.DEFAULT_FRAME_STYLE)
+            None, -1, "Assembly File Editor", style=wx.CENTER | wx.DEFAULT_FRAME_STYLE
+        )
         icon = wx.Icon("data/logopypdp8small.png", wx.BITMAP_TYPE_PNG)
         self.SetIcon(icon)
         self.SetMinSize((400, 500))
@@ -676,28 +713,36 @@ class FileEditorFrame(wx.Frame):
         self.testo.SetMarginWidth(1, 30)
 
         self.testo.SetKeyWords(
-            0, "I ORG END DEC HEX AND ADD LDA STA BUN BSA ISZ CLA CLE CMA CME CIR CIL INC SPA SZA SNA SZE HLT INP OUT ION IOF")
+            0,
+            "I ORG END DEC HEX AND ADD LDA STA BUN BSA ISZ CLA CLE CMA CME CIR CIL INC SPA SZA SNA SZE HLT INP OUT ION IOF",
+        )
         self.testo.SetLexer(stc.STC_LEX_PYTHON)
         self.testo.SetMarginLeft(5)
         self.Centre()
 
-        car = {'sansm': 'DejaVu Sans Mono',
-               'mono': 'CurierNew',
-               'serif': 'DejaVu Serif',
-               'size': 13,
-               'size2': 10
-               }
+        car = {
+            "sansm": "DejaVu Sans Mono",
+            "mono": "CurierNew",
+            "serif": "DejaVu Serif",
+            "size": 13,
+            "size2": 10,
+        }
 
         self.testo.StyleSetSpec(
-            stc.STC_P_DEFAULT, "fore:#A0A0A0,face:%(serif)s,size:%(size)d" % car)
+            stc.STC_P_DEFAULT, "fore:#A0A0A0,face:%(serif)s,size:%(size)d" % car
+        )
         self.testo.StyleSetSpec(
-            stc.STC_P_NUMBER, "fore:#E00000,face:%(mono)s,bold,size:%(size2)d" % car)
+            stc.STC_P_NUMBER, "fore:#E00000,face:%(mono)s,bold,size:%(size2)d" % car
+        )
         self.testo.StyleSetSpec(
-            stc.STC_P_WORD, "fore:#0000D0,face:%(mono)s,bold,size:%(size2)d" % car)
+            stc.STC_P_WORD, "fore:#0000D0,face:%(mono)s,bold,size:%(size2)d" % car
+        )
         self.testo.StyleSetSpec(
-            stc.STC_P_OPERATOR, "fore:#DDAA00,face:%(mono)s,size:%(size)d" % car)
+            stc.STC_P_OPERATOR, "fore:#DDAA00,face:%(mono)s,size:%(size)d" % car
+        )
         self.testo.StyleSetSpec(
-            stc.STC_STYLE_LINENUMBER, "fore:#696969,face:%(sansm)s,size:%(size2)d" % car)
+            stc.STC_STYLE_LINENUMBER, "fore:#696969,face:%(sansm)s,size:%(size2)d" % car
+        )
 
         # menu
         self._SetupMenus()
@@ -813,8 +858,7 @@ CONTINUA = Continua l'esecuzione del programma dopo un break. Equivale a premere
 
 ESEGUI = Esegue il codice fino all'istruzione HLT, che arresta la macchina."""
 
-        wx.MessageBox(
-            istruzioni, style=wx.CENTER | wx.ICON_INFORMATION | wx.OK)
+        wx.MessageBox(istruzioni, style=wx.CENTER | wx.ICON_INFORMATION | wx.OK)
 
     def _SetupMenus(self):
         """
@@ -866,11 +910,9 @@ ESEGUI = Esegue il codice fino all'istruzione HLT, che arresta la macchina."""
         Gestione dell'uscita dal programma
         """
         if self.testo.GetModify():
-            messaggio = (
-                "Le ultime modifiche non sono state salvate. \n\n Si vuole salvare il file attuale?")
+            messaggio = "Le ultime modifiche non sono state salvate. \n\n Si vuole salvare il file attuale?"
             stile = wx.YES_NO | wx.ICON_WARNING | wx.CENTER
-            risultato = wx.MessageBox(
-                messaggio, "Salvare i cambiamenti?", style=stile)
+            risultato = wx.MessageBox(messaggio, "Salvare i cambiamenti?", style=stile)
 
             if risultato == wx.YES:
                 if self.file is None:
@@ -887,7 +929,11 @@ ESEGUI = Esegue il codice fino all'istruzione HLT, che arresta la macchina."""
         """
         tipifile = "Assembly Files (*.asm)|*.asm|File di Testo (*.txt)|*.txt|Tutti i Files (*)|*"
         dialogo = wx.FileDialog(
-            self, message="Apri file", wildcard=tipifile, style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
+            self,
+            message="Apri file",
+            wildcard=tipifile,
+            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST,
+        )
         if dialogo.ShowModal() == wx.ID_OK:
             percorso = dialogo.GetPath()
             with open(percorso, "rb") as handle:
@@ -904,8 +950,13 @@ ESEGUI = Esegue il codice fino all'istruzione HLT, che arresta la macchina."""
         Salvataggio con nome di un file
         """
         tipifile = "Assembly Files (*.asm)|*.asm|File di Testo (*.txt)|*.txt|Tutti i Files (*)|*"
-        dialogo = wx.FileDialog(self, message="Salva come", defaultFile=".asm",
-                                wildcard=tipifile, style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
+        dialogo = wx.FileDialog(
+            self,
+            message="Salva come",
+            defaultFile=".asm",
+            wildcard=tipifile,
+            style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
+        )
         if dialogo.ShowModal() == wx.ID_OK:
             percorso = dialogo.GetPath()
             self.Save(percorso)
@@ -927,11 +978,11 @@ ESEGUI = Esegue il codice fino all'istruzione HLT, che arresta la macchina."""
         """
         if self.file is not None:
             if self.testo.GetModify():
-                messaggio = (
-                    "Le ultime modifiche non sono state salvate. \n\n Si vuole salvare il file attuale?")
+                messaggio = "Le ultime modifiche non sono state salvate. \n\n Si vuole salvare il file attuale?"
                 stile = wx.YES_NO | wx.ICON_WARNING | wx.CENTER
                 risultato = wx.MessageBox(
-                    messaggio, "Salvare i cambiamenti?", style=stile)
+                    messaggio, "Salvare i cambiamenti?", style=stile
+                )
 
                 if risultato == wx.YES:
                     if self.file is None:
