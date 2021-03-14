@@ -35,11 +35,10 @@ jobs:
           python3 -m pip install pyinstaller
         if: matrix.os != 'windows-latest'
       - name: Install dependencies - windows
-        shell: pwsh
         run: |
           python3 -m pip install --upgrade pip
           python3 -m venv myvenv
-          .\myvenv\Scripts\Activate.ps1
+          . .\myvenv\Scripts\Activate.ps1
           python3 -m pip install pyinstaller
         if: matrix.os == 'windows-latest'
 
@@ -54,7 +53,6 @@ jobs:
           chmod +x dist/pdp8_macos.run
         if: matrix.os == 'macos-latest'
       - name: Make executable - windows
-        shell: pwsh
         run: |
           .\myvenv\Scripts\pyinstaller.exe -F -w --name pdp8.exe __main__.py
         if: matrix.os == 'windows-latest'
