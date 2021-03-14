@@ -38,8 +38,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m venv myvenv
-          ls
-          .\myvenv\Scripts\Activate.ps1
+          .\myvenv\Scripts\activate.bat
           python3 -m pip install pyinstaller
         if: matrix.os == 'windows-latest'
 
