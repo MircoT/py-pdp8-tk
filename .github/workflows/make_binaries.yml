@@ -33,19 +33,47 @@ jobs:
           source myvenv/bin/activate
           python3 -m pip install pyinstaller
         if: matrix.os != 'windows-latest'
-      - name: Install dependencies windows
+      - name: Install dependencies - windows
         run: |
           python3 -m pip install --upgrade pip
           python3 -m venv myvenv
-          myvenv/bin/Activate.ps1
+          myvenv/Scrips/Activate.ps1
           python3 -m pip install pyinstaller
         if: matrix.os == 'windows-latest'
+
       - name: Make executable
         run: |
-          myvenv/bin/pyinstaller -F -w --name pdp8-${{ matrix.os }} __main__.py
-      - name: Upload release binaries
+          myvenv/bin/pyinstaller -F -w --name pdp8.run __main__.py
+          chmod +x dist/pdp8.run
+        if: matrix.os == 'ubuntu-latest'
+      - name: Make executable
+        run: |
+          myvenv/bin/pyinstaller -F -w --name pdp8.app __main__.py
+          chmod +x dist/pdp8.app
+        if: matrix.os == 'macos-latest'
+      - name: Make executable - windows
+        run: |
+          myvenv/Scripts/pyinstaller.exe -F -w --name pdp8.exe __main__.py
+        if: matrix.os == 'windows-latest'
+
+      - name: Upload release binary - ubuntu
         uses: alexellis/upload-assets@0.2.2
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          asset_paths: '["dist/pdp8-${{ matrix.os }}"]'
+          asset_paths: '["dist/pdp8.run"]'
+        if: matrix.os == 'ubuntu-latest'
+      - name: Upload release binary - macos
+        uses: alexellis/upload-assets@0.2.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          asset_paths: '["dist/pdp8.app"]'
+        if: matrix.os == 'macos-latest'
+      - name: Upload release binary - windows
+        uses: alexellis/upload-assets@0.2.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          asset_paths: '["dist/pdp8.exe"]'
+        if: matrix.os == 'windows-latest'
