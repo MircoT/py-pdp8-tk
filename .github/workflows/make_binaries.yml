@@ -24,6 +24,8 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: get repository
+        uses: actions/checkout@v2
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
