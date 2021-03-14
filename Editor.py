@@ -1,10 +1,23 @@
 # -*- coding: utf-8 -*-
 
 
-from Tkinter import LabelFrame, Scrollbar, Menu, Text,\
-    RIDGE, W, E, N, S, WORD, INSERT, END, HORIZONTAL
-from tkFileDialog import askopenfilename, asksaveasfilename
-from tkMessageBox import askquestion, showinfo, YES, WARNING
+from tkinter import (
+    LabelFrame,
+    Scrollbar,
+    Menu,
+    Text,
+    RIDGE,
+    W,
+    E,
+    N,
+    S,
+    WORD,
+    INSERT,
+    END,
+    HORIZONTAL,
+)
+from tkinter.filedialog import askopenfilename, asksaveasfilename
+from tkinter.messagebox import askquestion, showinfo, YES, WARNING
 
 
 class Editor(object):
@@ -21,11 +34,16 @@ class Editor(object):
         self.CD = calcolatore
         # Codice Assembly
         self.codice = LabelFrame(
-            self.master, text='Codice Assembly', relief=RIDGE, borderwidth=5, labelanchor='n', pady=5)
+            self.master,
+            text="Codice Assembly",
+            relief=RIDGE,
+            borderwidth=5,
+            labelanchor="n",
+            pady=5,
+        )
         self.codice.rowconfigure(0, weight=1)
         self.codice.columnconfigure(0, weight=1)
-        self.codice.grid(
-            row=1, column=0, rowspan=3, columnspan=5, sticky=W + E + N + S)
+        self.codice.grid(row=1, column=0, rowspan=3, columnspan=5, sticky=W + E + N + S)
 
         self.menubar = Menu(self.master)
         self.create_widgets(self.menubar)
@@ -36,19 +54,19 @@ class Editor(object):
         """
         # Menu
         self.filemenu = Menu(menubar, tearoff=0)
-        self.filemenu.add_command(label='Apri', command=self.aprifile)
-        self.filemenu.add_command(label='Salva', command=self.salvafile)
-        self.filemenu.add_command(label='Cancella', command=self.cancella)
+        self.filemenu.add_command(label="Apri", command=self.aprifile)
+        self.filemenu.add_command(label="Salva", command=self.salvafile)
+        self.filemenu.add_command(label="Cancella", command=self.cancella)
         self.filemenu.add_separator()
-        self.filemenu.add_command(label='Esci', command=self.exit)
-        menubar.add_cascade(label='Opzioni', menu=self.filemenu)
+        self.filemenu.add_command(label="Esci", command=self.exit)
+        menubar.add_cascade(label="Opzioni", menu=self.filemenu)
         self.master.config(menu=self.menubar)
 
         self.helpmenu = Menu(menubar, tearoff=0)
-        self.helpmenu.add_command(label='Informazioni', command=self.infor)
-        self.helpmenu.add_command(label='Legenda', command=self.leg)
-        self.helpmenu.add_command(label='Guida', command=self.guida)
-        menubar.add_cascade(label='Aiuto', menu=self.helpmenu)
+        self.helpmenu.add_command(label="Informazioni", command=self.infor)
+        self.helpmenu.add_command(label="Legenda", command=self.leg)
+        self.helpmenu.add_command(label="Guida", command=self.guida)
+        menubar.add_cascade(label="Aiuto", menu=self.helpmenu)
 
         # Codice Assembly
         self.Inserisci = Text(self.codice, width=50, height=30, wrap=WORD)
@@ -62,31 +80,35 @@ class Editor(object):
         """
         Esce dal programma
         """
-        if askquestion('Exit', 'Sicuro di voler uscire?') == YES:
+        if askquestion("Exit", "Sicuro di voler uscire?") == YES:
             self.master.quit()
             self.master.destroy()
         else:
             showinfo(
-                'Suggerimento', """Forse e' meglio fare una pausa!""", icon=WARNING)
+                "Suggerimento", """Forse e' meglio fare una pausa!""", icon=WARNING
+            )
 
     def aprifile(self):
         """
         Apre un file assembly e lo mostra a video per essere modificato
         """
-        path = askopenfilename(title='Apri codice assembly',
-                               filetypes=[('Assembly', '.asm'), ('Testo', '.txt'), ('All', '*')])
-        if path != '':
-            file = open(path, 'r')
-            temp = file.read()
-            self.Inserisci.delete(1.0, END)
-            self.Inserisci.insert(INSERT, temp.decode('ascii', 'ignore'))
-            file.close()
+        path = askopenfilename(
+            title="Apri codice assembly",
+            filetypes=[("Assembly", ".asm"), ("Testo", ".txt"), ("All", "*")],
+        )
+        if path != "":
+            with open(path, "r") as cur_file:
+                self.Inserisci.delete(1.0, END)
+                self.Inserisci.insert(INSERT, cur_file.read())
 
     def cancella(self):
         """
         Cancella l'attuale file assembly caricato
         """
-        if askquestion('Cancella', 'Si vuole cancellare tutto il codice assembly?') == YES:
+        if (
+            askquestion("Cancella", "Si vuole cancellare tutto il codice assembly?")
+            == YES
+        ):
             self.Inserisci.delete(1.0, END)
 
     def salvafile(self):
@@ -94,15 +116,15 @@ class Editor(object):
         Salva il file assembly su cui si sta lavorando
         """
         contenuto = self.Inserisci.get(1.0, END)
-        contenuto = contenuto.encode('ascii', 'ignore')
-        path = asksaveasfilename(title='Salva codice assembly',
-                                 defaultextension=[
-                                     ('Assembly', '.asm'), ('Testo', '.txt'), ('All', '*')],
-                                 filetypes=[('Assembly', '.asm'), ('Testo', '.txt'), ('All', '*')])
+        contenuto = contenuto.encode("ascii", "ignore")
+        path = asksaveasfilename(
+            title="Salva codice assembly",
+            defaultextension=[("Assembly", ".asm"), ("Testo", ".txt"), ("All", "*")],
+            filetypes=[("Assembly", ".asm"), ("Testo", ".txt"), ("All", "*")],
+        )
 
-        print path
-        if path != '':
-            file = open(path, 'w')
+        if path != "":
+            file = open(path, "w")
             file.write(str(contenuto))
             file.close()
 

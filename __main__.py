@@ -6,7 +6,7 @@
 
 
 from sys import exit
-from Tkinter import Tk, Toplevel, Canvas, N, S, E, W, NW, HORIZONTAL
+from tkinter import Tk, Toplevel, Canvas, N, S, E, W, NW, HORIZONTAL
 
 from pdp8 import pdp8
 from AutoScrollbar import AutoScrollbar
@@ -32,9 +32,9 @@ def run():
     scrollbar2 = AutoScrollbar(emulatore, orient=HORIZONTAL)
     scrollbar2.grid(row=1, column=0, sticky=E + W)
 
-    finestra = Canvas(emulatore,
-                      yscrollcommand=scrollbar1.set,
-                      xscrollcommand=scrollbar2.set)
+    finestra = Canvas(
+        emulatore, yscrollcommand=scrollbar1.set, xscrollcommand=scrollbar2.set
+    )
     finestra.grid(row=0, column=0, sticky=N + S + E + W)
 
     scrollbar1.config(command=finestra.yview)
@@ -58,5 +58,5 @@ def run():
     emulatore.mainloop()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     exit(run())

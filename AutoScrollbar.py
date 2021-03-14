@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 
-from Tkinter import Scrollbar, TclError
+from tkinter import Scrollbar, TclError
 
 
 class AutoScrollbar(Scrollbar):
 
-    """ Una scrollbar che si nasconde se non necessaria.
+    """Una scrollbar che si nasconde se non necessaria.
     Funziona solo se si usa la grid geometry.
     fonte : http://effbot.org/zone/tkinter-autoscrollbar.htm
     """
@@ -22,7 +22,7 @@ class AutoScrollbar(Scrollbar):
         Scrollbar.set(self, lo, hi)
 
     def pack(self, **kw):
-        raise TclError, "Non si può utilizzare pack con questo widget"
+        raise (TclError, "Non si può utilizzare pack con questo widget")
 
     def place(self, **kw):
-        raise TclError, "Non si può utilizzare place con questo widget"
+        raise (TclError, "Non si può utilizzare place con questo widget")
