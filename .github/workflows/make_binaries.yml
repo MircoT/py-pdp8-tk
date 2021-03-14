@@ -28,6 +28,8 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install pyinstaller
+          pwd
+          ls -altrh
       - name: Make executable
         run: |
           /home/runner/.local/bin/pyinstaller -F -w --name pdp8 __main__.py
