@@ -29,19 +29,13 @@ jobs:
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m pip install pyinstaller
-          pwd
-          ls -altrh
+          python3 -m pip install --user pyinstaller
       - name: Make executable
         run: |
-          /home/runner/.local/bin/pyinstaller -F -w --name pdp8 __main__.py
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          /home/runner/.local/bin/pyinstaller -F -w --name pdp8-${{ matrix.os }} __main__.py
+      - name: Upload release binaries
+        uses: alexellis/upload-assets@0.3.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          asset_paths: 'dist/pdp8-${{ matrix.os }}'
