@@ -37,10 +37,7 @@ jobs:
       - name: Make executable
         run: |
           /home/runner/.local/bin/pyinstaller -F -w --name pdp8-${{ matrix.os }} __main__.py
-          ls -altrh dist
       - name: Upload release binaries
         uses: alexellis/upload-assets@0.3.0
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
         with:
           asset_paths: 'dist/pdp8-${{ matrix.os }}'
