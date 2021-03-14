@@ -273,10 +273,11 @@ class FrameEmulatorecontrol(wx.Frame):
                 self.CD.modd = True
                 self.AggiornaRAM()
                 self.SetStatusText("Breakpoint inserito")
-            except Exception:
+            except Exception as e:
                 wx.MessageBox(
                     "Errore, indirizzo indicato non corretto!", style=wx.ICON_ERROR
                 )
+                wx.MessageBox(f"Errore: {e}", style=wx.ICON_ERROR)
         dlg.Destroy()
 
     def OnContinua(self, event):

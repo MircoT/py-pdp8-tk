@@ -107,8 +107,9 @@ class pdp8(object):
                 self.tempo += 1
             else:
                 self.tempo = 0
-        except Exception:
+        except Exception as e:
             avviso("Errore, Controllare il codice assembly!", style=ICON_ERROR)
+            avviso(f"Errore: {e}", style=ICON_ERROR)
             self.S = False
 
     def interrupt(self, root):
