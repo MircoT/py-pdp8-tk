@@ -41,12 +41,12 @@ jobs:
           python3 -m pip install pyinstaller
         if: matrix.os == 'windows-latest'
 
-      - name: Make executable
+      - name: Make executable - ubuntu
         run: |
           myvenv/bin/pyinstaller -F -w --name pdp8.run __main__.py
           chmod +x dist/pdp8.run
         if: matrix.os == 'ubuntu-latest'
-      - name: Make executable
+      - name: Make executable - macos
         run: |
           myvenv/bin/pyinstaller -F -w --name pdp8.app __main__.py
           chmod +x dist/pdp8.app
