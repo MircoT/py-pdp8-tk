@@ -24,20 +24,18 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: get repository
+        uses: actions/checkout@v2
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install pyinstaller
+          python3 -m pip install --upgrade pip
+          python3 -m pip install --user pyinstaller
       - name: Make executable
         run: |
-          pyinstaller -F -w --name pdp8 __main__.py
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          /home/runner/.local/bin/pyinstaller -F -w --name pdp8-${{ matrix.os }} __main__.py
+      - name: Upload release binaries
+        uses: alexellis/upload-assets@0.3.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          asset_paths: 'dist/pdp8-${{ matrix.os }}'
