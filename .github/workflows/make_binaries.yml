@@ -39,5 +39,7 @@ jobs:
           /home/runner/.local/bin/pyinstaller -F -w --name pdp8-${{ matrix.os }} __main__.py
       - name: Upload release binaries
         uses: alexellis/upload-assets@0.3.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           asset_paths: 'dist/pdp8-${{ matrix.os }}'
