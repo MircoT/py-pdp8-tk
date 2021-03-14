@@ -10,5 +10,5 @@ Per gli esempi svolti dovete seguire questo link : https://github.com/MircoT/py-
 
 # Requisiti
 
-* Python 2.7
+* Python 3
 * Tkinter / wxPython
