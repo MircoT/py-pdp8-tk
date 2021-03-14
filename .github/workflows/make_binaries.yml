@@ -30,7 +30,7 @@ jobs:
           python3 -m pip install pyinstaller
       - name: Make executable
         run: |
-          /home/runner/.local/bin -F -w --name pdp8 __main__.py
+          /home/runner/.local/bin/pyinstaller -F -w --name pdp8 __main__.py
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
