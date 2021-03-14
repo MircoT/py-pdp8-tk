@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 1
+      # max-parallel: 1
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python-version: [3.8]
@@ -38,6 +38,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m venv myvenv
+          ls
           .\myvenv\Scripts\Activate.ps1
           python3 -m pip install pyinstaller
         if: matrix.os == 'windows-latest'
@@ -49,8 +50,8 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
       - name: Make executable - macos
         run: |
-          myvenv/bin/pyinstaller -F -w --name pdp8.app __main__.py
-          chmod +x dist/pdp8.app
+          myvenv/bin/pyinstaller -F -w --name pdp8_macos.run __main__.py
+          chmod +x dist/pdp8_macos.run
         if: matrix.os == 'macos-latest'
       - name: Make executable - windows
         run: |
@@ -69,7 +70,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          asset_paths: '["dist/pdp8.app"]'
+          asset_paths: '["dist/pdp8_macos.run"]'
         if: matrix.os == 'macos-latest'
       - name: Upload release binary - windows
         uses: alexellis/upload-assets@0.2.2
