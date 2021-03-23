@@ -4,7 +4,7 @@ A simple **pdp8** emulator oriented to teaching, thus with several simplificatio
 
 ![pdp8-screenshot](pdp8-screenshot.png)
 
-> **Note**: Currently, the GUI is in the Italian language only.
+> **Note**: Currently, the GUI is in the Italian language only, translations and suggestions for a multilanguage interface are well accepted:grey_exclamation: Make a pull request:grey_exclamation:
 
 ## :clipboard: Requirements
 
