@@ -1,12 +1,14 @@
 # py-pdp8-tk
 
-È un Emulatore di un calcolatore didattico _PDP-8_ .
+A simple **pdp8** emulator oriented to teaching, thus with several simplifications (e.g. the I/O) and with an editor focused on processor inspection.
 
-La versione rivisitata dell'emulatore è presente nel [branch pdp8-wxPython](https://github.com/MircoT/py-pdp8-tk/tree/pdp8-wxpython). Quest'ultima utilizza una libreria grafica differente, ovvero *wxWidgets* (grazie a **wxPython**).
-
-Se avete bisogno di informazioni dettagliate o esempi svolti : [https://github.com/MircoT/py-pdp8-tk/wiki](https://github.com/MircoT/py-pdp8-tk/wiki)
-
-# Requisiti
+## :clipboard: Requirements
 
 * Python 3
 * Tkinter
+
+> **Note**: there is a revised version of the emulator in [branch pdp8-wxPython](https://github.com/MircoT/py-pdp8-tk/tree/pdp8-wxpython) that uses **wxPython** as GUI.
+
+## :information_source: Info
+
+Information about the **pdp8** specs and some example can be found in the [wiki](https://github.com/MircoT/py-pdp8-tk/wiki).
