@@ -9,4 +9,4 @@ Se avete bisogno di informazioni dettagliate o esempi svolti : [https://github.c
 # Requisiti
 
 * Python 3
-* Tkinter / wxPython
+* Tkinter
