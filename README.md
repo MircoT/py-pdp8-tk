@@ -2,6 +2,8 @@
 
 A simple **pdp8** emulator oriented to teaching, thus with several simplifications (e.g. the I/O) and with an editor focused on processor inspection.
 
+![pdp8-screenshot](pdp8-screenshot.png)
+
 ## :clipboard: Requirements
 
 * Python 3
