@@ -11,4 +11,4 @@ A simple **pdp8** emulator oriented to teaching, thus with several simplificatio
 
 ## :information_source: Info
 
-Information about the **pdp8** specs and some example can be found in the [wiki](https://github.com/MircoT/py-pdp8-tk/wiki).
+Information about the **pdp8** specs and some examples can be found in the [wiki](https://github.com/MircoT/py-pdp8-tk/wiki).
