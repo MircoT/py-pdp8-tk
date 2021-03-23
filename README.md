@@ -4,6 +4,8 @@ A simple **pdp8** emulator oriented to teaching, thus with several simplificatio
 
 ![pdp8-screenshot](pdp8-screenshot.png)
 
+> **Note**: Currently, the GUI is in the Italian language only.
+
 ## :clipboard: Requirements
 
 * Python 3
