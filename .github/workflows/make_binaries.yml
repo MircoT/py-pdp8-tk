@@ -27,20 +27,27 @@ jobs:
     steps:
       - name: get repository
         uses: actions/checkout@v2
-      - name: Install dependencies
+      - name: Install dependencies - linux
         run: |
           python3 -m pip install --upgrade pip
           python3 -m venv myvenv
           source myvenv/bin/activate
           python3 -m pip install pyinstaller
-          python3 -m pip install -U tk
-        if: matrix.os != 'windows-latest'
+        if: matrix.os == 'ubuntu-latest'
+
       - name: Install dependencies - windows
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install pyinstaller
-          python3 -m pip install -U tk
         if: matrix.os == 'windows-latest'
+
+      - name: Install dependencies - macos
+        run: |
+          brew install python-tk
+          python3 -m pip install --upgrade pip
+          python3 -m venv myvenv
+          source myvenv/bin/activate
+        if: matrix.os == 'macos-latest'
 
       - name: Make executable - ubuntu
         run: |
