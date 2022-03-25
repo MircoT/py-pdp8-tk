@@ -52,19 +52,19 @@ jobs:
 
       - name: Make executable - ubuntu
         run: |
-          myvenv/bin/pyinstaller -F -w --name pdp8.run __main__.py
+          myvenv/bin/pyinstaller -F -w -p . --name pdp8.run __main__.py
           chmod +x dist/pdp8.run
         if: matrix.os == 'ubuntu-latest'
 
       - name: Make executable - macos
         run: |
-          myvenv/bin/pyinstaller -F -w --name pdp8_macos.run __main__.py
+          myvenv/bin/pyinstaller -F -w -p . --name pdp8_macos.run __main__.py
           chmod +x dist/pdp8_macos.run
         if: matrix.os == 'macos-latest'
 
       - name: Make executable - windows
         run: |
-          pyinstaller.exe -F -w --name pdp8.exe __main__.py
+          pyinstaller.exe -F -w -p . --name pdp8.exe __main__.py
         if: matrix.os == 'windows-latest'
 
       - name: Upload release binary - ubuntu
