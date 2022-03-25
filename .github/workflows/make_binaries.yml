@@ -21,7 +21,7 @@ jobs:
       # max-parallel: 1
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: [3.8]
+        python-version: [3.10]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -45,11 +45,13 @@ jobs:
           myvenv/bin/pyinstaller -F -w --name pdp8.run __main__.py
           chmod +x dist/pdp8.run
         if: matrix.os == 'ubuntu-latest'
+
       - name: Make executable - macos
         run: |
           myvenv/bin/pyinstaller -F -w --name pdp8_macos.run __main__.py
           chmod +x dist/pdp8_macos.run
         if: matrix.os == 'macos-latest'
+
       - name: Make executable - windows
         run: |
           pyinstaller.exe -F -w --name pdp8.exe __main__.py
@@ -62,6 +64,7 @@ jobs:
         with:
           asset_paths: '["dist/pdp8.run"]'
         if: matrix.os == 'ubuntu-latest'
+
       - name: Upload release binary - macos
         uses: alexellis/upload-assets@0.2.2
         env:
@@ -69,6 +72,7 @@ jobs:
         with:
           asset_paths: '["dist/pdp8_macos.run"]'
         if: matrix.os == 'macos-latest'
+
       - name: Upload release binary - windows
         uses: alexellis/upload-assets@0.2.2
         env:
