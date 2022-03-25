@@ -21,7 +21,7 @@ jobs:
       # max-parallel: 1
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: [3.10]
+        python-version: [3.9]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -47,6 +47,7 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m venv myvenv
           source myvenv/bin/activate
+          python3 -m pip install pyinstaller
         if: matrix.os == 'macos-latest'
 
       - name: Make executable - ubuntu
